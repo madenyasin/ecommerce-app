@@ -69,6 +69,10 @@ fun LoginScreen(
         uiState.isLoading -> LoadingBar()
         uiState.list.isNotEmpty() -> EmptyScreen()
         else -> LoginContent(
+            email = uiState.email,
+            password = uiState.password,
+            onEmailChange = { onAction(UiAction.OnEmailChange(it)) },
+            onPasswordChange = { onAction(UiAction.OnPasswordChange(it)) },
             onClick = { onAction(UiAction.OnLoginClick) },
             onSignUpClick = { onAction(UiAction.OnSignUpClick) },
             onForgotClick = { onAction(UiAction.OnForgotClick) }
@@ -78,6 +82,10 @@ fun LoginScreen(
 
 @Composable
 fun LoginContent(
+    email: String,
+    password: String,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
     onClick: () -> Unit,
     onSignUpClick: () -> Unit,
     onForgotClick: () -> Unit
@@ -101,31 +109,41 @@ fun LoginContent(
                 color = Color.Gray
             )
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = email,
+                onValueChange = onEmailChange,
                 label = { Text(text = "Email", fontSize = 13.sp) },
+                singleLine = true,
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .fillMaxWidth(),
             )
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = password,
+                onValueChange = onPasswordChange,
                 label = { Text(text = "Password", fontSize = 13.sp) },
+                singleLine = true,
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .fillMaxWidth()
             )
 
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    text = "Join Us!",
+                    fontSize = 15.sp,
+                    color = Color.DarkGray,
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .clickable { onSignUpClick.invoke() }
+                )
                 Text(
                     text = "Forgot Password?",
                     fontSize = 15.sp,
                     color = Color.Red,
                     modifier = Modifier
                         .padding(top = 8.dp)
-                        .clickable { onForgotClick.invoke() })
-
+                        .clickable { onForgotClick.invoke() }
+                )
             }
             Text(
                 "Or login with social account",
@@ -133,7 +151,12 @@ fun LoginContent(
                 modifier = Modifier.padding(top = 16.dp)
             )
 
-            Row(modifier = Modifier.fillMaxWidth().padding(32.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(32.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
                 SocialMediaButton(
                     modifier = Modifier,
                     onClick = {},
@@ -150,7 +173,8 @@ fun LoginContent(
                     modifier = Modifier,
                     onClick = {},
                     image = painterResource(R.drawable.github_logo),
-                    name = "Github")
+                    name = "Github"
+                )
             }
         }
         Button(

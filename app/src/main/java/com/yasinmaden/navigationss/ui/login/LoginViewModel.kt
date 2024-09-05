@@ -28,8 +28,19 @@ class LoginViewModel : ViewModel() {
             is UiAction.OnLoginClick -> handleLoginClick()
             is UiAction.OnSignUpClick -> handleSignUpClick()
             is UiAction.OnForgotClick -> handleForgotClick()
+            is UiAction.OnEmailChange -> updateEmail(uiAction.email)
+            is UiAction.OnPasswordChange -> updatePassword(uiAction.password)
         }
     }
+    private fun updateEmail(email: String) {
+        _uiState.update { it.copy(email = email) }
+    }
+
+    private fun updatePassword(password: String) {
+        _uiState.update { it.copy(password = password) }
+    }
+
+
     private fun handleLoginClick() {
         // Handle login logic here, e.g., authentication
         // Update state or emit effects
