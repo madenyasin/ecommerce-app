@@ -6,7 +6,15 @@ object LoginContract {
         val list: List<String> = emptyList(),
     )
 
-    sealed class UiAction
+    sealed class UiAction {
+        object OnLoginClick : UiAction()
+        object OnSignUpClick : UiAction()
+        object OnForgotClick : UiAction()
+    }
 
-    sealed class UiEffect
+
+    sealed class UiEffect {
+        object NavigateToSignUp : UiEffect()
+        object NavigateToForgotPassword : UiEffect()
+    }
 }

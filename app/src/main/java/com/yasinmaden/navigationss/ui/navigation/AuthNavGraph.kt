@@ -7,14 +7,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.yasinmaden.navigationss.ui.LoginContent
 import com.yasinmaden.navigationss.ui.ScreenContent
-import com.yasinmaden.navigationss.ui.forgot.ForgotScreen
-import com.yasinmaden.navigationss.ui.forgot.ForgotViewModel
 import com.yasinmaden.navigationss.ui.login.LoginScreen
 import com.yasinmaden.navigationss.ui.login.LoginViewModel
-import com.yasinmaden.navigationss.ui.signup.SignUpScreen
-import com.yasinmaden.navigationss.ui.signup.SignUpViewModel
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     navigation(
@@ -22,17 +17,14 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
         startDestination = AuthScreen.Login.route
     ) {
         composable(route = AuthScreen.Login.route) {
-            LoginContent(
-                onClick = {
-                    navController.popBackStack()
-                    navController.navigate(Graph.HOME)
-                },
-                onSignUpClick = {
-                    navController.navigate(AuthScreen.SignUp.route)
-                },
-                onForgotClick = {
-                    navController.navigate(AuthScreen.Forgot.route)
-                }
+            val viewModel = viewModel<LoginViewModel>(it)
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val uiEffect = viewModel.uiEffect
+            LoginScreen(
+                navController = navController,
+                uiState = uiState,
+                uiEffect = uiEffect,
+                onAction = viewModel::onAction
             )
         }
         composable(route = AuthScreen.SignUp.route) {
