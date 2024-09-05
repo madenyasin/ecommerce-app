@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -27,8 +28,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.OutlinedButton
 import androidx.wear.compose.material.Switch
+import com.yasinmaden.navigationss.R
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
+import com.yasinmaden.navigationss.ui.components.SocialMediaButton
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiAction
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiEffect
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiState
@@ -124,8 +127,31 @@ fun LoginContent(
                         .clickable { onForgotClick.invoke() })
 
             }
-            //Text("Or login with social account", color = Color.Gray, modifier = Modifier.padding(top = 16.dp))
+            Text(
+                "Or login with social account",
+                color = Color.Gray,
+                modifier = Modifier.padding(top = 16.dp)
+            )
 
+            Row(modifier = Modifier.fillMaxWidth().padding(32.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                SocialMediaButton(
+                    modifier = Modifier,
+                    onClick = {},
+                    image = painterResource(R.drawable.google_logo),
+                    name = "Google"
+                )
+                SocialMediaButton(
+                    modifier = Modifier,
+                    onClick = {},
+                    image = painterResource(R.drawable.facebook_logo),
+                    name = "Facebook"
+                )
+                SocialMediaButton(
+                    modifier = Modifier,
+                    onClick = {},
+                    image = painterResource(R.drawable.github_logo),
+                    name = "Github")
+            }
         }
         Button(
             onClick = onClick,
