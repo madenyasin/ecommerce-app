@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.yasinmaden.navigationss.ui.navigation.NavigationGraph
 import com.yasinmaden.navigationss.ui.navigation.RootNavigationGraph
 import com.yasinmaden.navigationss.ui.theme.MyappTheme
 

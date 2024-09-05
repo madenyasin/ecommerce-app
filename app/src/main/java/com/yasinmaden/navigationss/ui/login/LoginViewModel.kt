@@ -33,7 +33,9 @@ class LoginViewModel : ViewModel() {
     private fun handleLoginClick() {
         // Handle login logic here, e.g., authentication
         // Update state or emit effects
-
+        viewModelScope.launch {
+            emitUiEffect(UiEffect.NavigateToHome)
+        }
     }
 
     private fun handleSignUpClick() {
