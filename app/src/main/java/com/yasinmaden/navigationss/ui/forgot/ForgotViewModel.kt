@@ -1,6 +1,8 @@
 package com.yasinmaden.navigationss.ui.forgot
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiAction
 import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiEffect
 import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiState
@@ -11,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class ForgotViewModel : ViewModel() {
 
@@ -21,6 +24,24 @@ class ForgotViewModel : ViewModel() {
     val uiEffect: Flow<UiEffect> by lazy { _uiEffect.receiveAsFlow() }
 
     fun onAction(uiAction: UiAction) {
+        when (uiAction) {
+            is UiAction.OnBackClick -> handleBackClick()
+            is UiAction.OnEmailChange -> updateEmail(uiAction.email)
+            is UiAction.OnConfirmClick -> handleConfirmClick()
+        }
+    }
+    private fun updateEmail(email: String){
+        _uiState.update { it.copy(email = email) }
+    }
+    private fun handleBackClick() {
+        viewModelScope.launch {
+            emitUiEffect(UiEffect.NavigateBack)
+        }
+    }
+    private fun handleConfirmClick() {
+        viewModelScope.launch {
+            emitUiEffect(UiEffect.NavigateToLogin)
+        }
     }
 
     private fun updateUiState(block: UiState.() -> UiState) {
