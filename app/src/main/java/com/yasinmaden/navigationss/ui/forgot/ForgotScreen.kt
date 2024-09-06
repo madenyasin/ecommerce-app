@@ -64,7 +64,10 @@ fun ForgotScreen(
 
                 is UiEffect.NavigateToLogin -> {
                     // Handle navigation to login screen
-                    navController.navigate(AuthScreen.Login.route)
+                    navController.navigate(AuthScreen.Login.route) {
+                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                        launchSingleTop = true
+                    }
                 }
 
                 is UiEffect.ShowToast -> {
