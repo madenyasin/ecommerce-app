@@ -1,5 +1,6 @@
 package com.yasinmaden.navigationss.ui.forgot
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.yasinmaden.navigationss.R
+import com.yasinmaden.navigationss.ui.MainActivity
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
 import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiAction
@@ -49,6 +51,9 @@ fun ForgotScreen(
     uiEffect: Flow<UiEffect>,
     onAction: (UiAction) -> Unit,
 ) {
+    val context = LocalContext.current
+
+
     LaunchedEffect(Unit) {
         uiEffect.collect { effect ->
             when (effect) {
@@ -64,8 +69,7 @@ fun ForgotScreen(
 
                 is UiEffect.ShowToast -> {
                     // Handle showing a toast message
-
-
+                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 }
             }
 

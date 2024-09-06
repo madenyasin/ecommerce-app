@@ -41,8 +41,11 @@ class ForgotViewModel : ViewModel() {
     private fun handleConfirmClick() {
         viewModelScope.launch {
             emitUiEffect(UiEffect.NavigateToLogin)
+            emitUiEffect(UiEffect.ShowToast("Password reset email sent"))
         }
     }
+
+
 
     private fun updateUiState(block: UiState.() -> UiState) {
         _uiState.update(block)
