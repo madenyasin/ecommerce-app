@@ -120,7 +120,8 @@ fun LoginContent(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
-                ),                modifier = Modifier
+                ),
+                modifier = Modifier
                     .padding(top = 16.dp)
                     .fillMaxWidth(),
             )
@@ -167,7 +168,7 @@ fun LoginContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(32.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 SocialMediaButton(
                     modifier = Modifier,
