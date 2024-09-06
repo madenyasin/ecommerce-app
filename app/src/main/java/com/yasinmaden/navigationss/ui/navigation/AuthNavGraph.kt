@@ -8,6 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.yasinmaden.navigationss.ui.ScreenContent
+import com.yasinmaden.navigationss.ui.forgot.ForgotScreen
+import com.yasinmaden.navigationss.ui.forgot.ForgotViewModel
 import com.yasinmaden.navigationss.ui.login.LoginScreen
 import com.yasinmaden.navigationss.ui.login.LoginViewModel
 
@@ -27,11 +29,20 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                 onAction = viewModel::onAction
             )
         }
+        composable(route = AuthScreen.Forgot.route) {
+            val viewModel = viewModel<ForgotViewModel>(it)
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val uiEffect = viewModel.uiEffect
+//            ScreenContent(name = AuthScreen.Forgot.route) {}
+            ForgotScreen(
+                navController = navController,
+                uiState = uiState,
+                uiEffect = uiEffect,
+                onAction = viewModel::onAction
+            )
+        }
         composable(route = AuthScreen.SignUp.route) {
             ScreenContent(name = AuthScreen.SignUp.route) {}
-        }
-        composable(route = AuthScreen.Forgot.route) {
-            ScreenContent(name = AuthScreen.Forgot.route) {}
         }
     }
 }
