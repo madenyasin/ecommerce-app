@@ -1,4 +1,4 @@
-package com.yasinmaden.navigationss.ui
+package com.yasinmaden.navigationss.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

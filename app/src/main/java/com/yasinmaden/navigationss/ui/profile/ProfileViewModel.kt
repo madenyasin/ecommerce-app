@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiAction
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiEffect
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,8 +12,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
-
-class ProfileViewModel : ViewModel() {
+import javax.inject.Inject
+@HiltViewModel
+class ProfileViewModel @Inject constructor(): ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
