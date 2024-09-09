@@ -1,4 +1,4 @@
-package com.yasinmaden.navigationss
+package com.yasinmaden.navigationss.ui.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home

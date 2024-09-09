@@ -6,8 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.yasinmaden.navigationss.BottomBarScreen
-import com.yasinmaden.navigationss.ui.ScreenContent
+import com.yasinmaden.navigationss.ui.components.BottomBarScreen
+import com.yasinmaden.navigationss.ui.components.ScreenContent
 
 @Composable
 fun HomeNavGraph(navController: NavHostController) {
