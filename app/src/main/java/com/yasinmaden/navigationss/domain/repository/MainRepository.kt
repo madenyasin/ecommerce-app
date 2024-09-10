@@ -1,3 +1,0 @@
-package com.yasinmaden.navigationss.domain.repository
-
-interface MainRepository

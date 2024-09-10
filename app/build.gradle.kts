@@ -75,5 +75,5 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     implementation(platform(libs.firebase.bom))
-
+    implementation(libs.firebase.auth)
 }

@@ -1,5 +1,6 @@
 package com.yasinmaden.navigationss.ui.login
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -51,6 +52,8 @@ fun LoginScreen(
     uiEffect: Flow<UiEffect>,
     onAction: (UiAction) -> Unit,
 ) {
+    val context = LocalContext.current
+
     // Observe UI effects (like navigation)
     LaunchedEffect(Unit) {
         uiEffect.collect { effect ->
@@ -65,6 +68,9 @@ fun LoginScreen(
 
                 is UiEffect.NavigateToHome -> {
                     navController.navigate(Graph.HOME)
+                }
+                is UiEffect.ShowToast -> {
+                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }

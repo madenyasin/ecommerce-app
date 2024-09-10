@@ -2,6 +2,8 @@ package com.yasinmaden.navigationss.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yasinmaden.navigationss.common.Resource
+import com.yasinmaden.navigationss.data.repository.AuthRepository
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiAction
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiEffect
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiState
@@ -17,7 +19,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(private val authRepository: AuthRepository) :
+    ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -28,13 +31,51 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
     fun onAction(uiAction: UiAction) {
         when (uiAction) {
-            is UiAction.OnLoginClick -> handleLoginClick()
+            is UiAction.OnLoginClick -> signIn()
             is UiAction.OnSignUpClick -> handleSignUpClick()
             is UiAction.OnForgotClick -> handleForgotClick()
             is UiAction.OnEmailChange -> updateEmail(uiAction.email)
             is UiAction.OnPasswordChange -> updatePassword(uiAction.password)
         }
     }
+
+    init {
+        isUserLoggedIn()
+    }
+
+    private fun signUp() = viewModelScope.launch {
+        when (val result = authRepository.signUp(uiState.value.email, uiState.value.password)) {
+            is Resource.Success -> {
+                emitUiEffect(UiEffect.ShowToast(result.data))
+                emitUiEffect(UiEffect.NavigateToHome)
+            }
+
+            is Resource.Error -> {
+                emitUiEffect(UiEffect.ShowToast(result.exception.message.orEmpty()))
+            }
+        }
+    }
+    private fun signIn() = viewModelScope.launch {
+        when (val result = authRepository.signIn(uiState.value.email, uiState.value.password)) {
+            is Resource.Success -> {
+                emitUiEffect(UiEffect.ShowToast(result.data))
+                emitUiEffect(UiEffect.NavigateToHome)
+            }
+
+            is Resource.Error -> {
+                emitUiEffect(UiEffect.ShowToast(result.exception.message ?: "Error"))
+            }
+        }
+    }
+
+
+
+    private fun isUserLoggedIn() = viewModelScope.launch {
+        if (authRepository.isUserLoggedIn()) {
+            emitUiEffect(UiEffect.NavigateToHome)
+        }
+    }
+
     private fun updateEmail(email: String) {
         _uiState.update { it.copy(email = email) }
     }

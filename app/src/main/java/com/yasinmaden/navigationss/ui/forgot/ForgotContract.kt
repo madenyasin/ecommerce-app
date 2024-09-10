@@ -18,5 +18,6 @@ object ForgotContract {
         object NavigateToLogin : UiEffect()
         data class ShowToast(val message: String) : UiEffect()
 
+
     }
 }

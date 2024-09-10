@@ -15,7 +15,6 @@ object LoginContract {
         data class OnEmailChange(val email: String) : UiAction()   // New action for email input
         data class OnPasswordChange(val password: String) : UiAction() // New action for password input
 
-
     }
 
 
@@ -23,5 +22,7 @@ object LoginContract {
         object NavigateToSignUp : UiEffect()
         object NavigateToForgotPassword : UiEffect()
         object NavigateToHome : UiEffect()
+        data class ShowToast(val message: String) : UiEffect()
+
     }
 }

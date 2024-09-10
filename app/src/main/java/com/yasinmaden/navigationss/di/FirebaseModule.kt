@@ -1,8 +1,6 @@
 package com.yasinmaden.navigationss.di
 
 import com.google.firebase.auth.FirebaseAuth
-import com.yasinmaden.navigationss.data.repository.AuthRepository
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,9 +9,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule {
-
+object FirebaseModule {
     @Provides
     @Singleton
-    fun bindAuthRepository(auth: FirebaseAuth): AuthRepository = AuthRepository(auth)
+    fun provideFirebaseAuth() = FirebaseAuth.getInstance()
 }
