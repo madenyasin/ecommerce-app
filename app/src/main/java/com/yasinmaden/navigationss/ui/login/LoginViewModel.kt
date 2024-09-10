@@ -36,6 +36,7 @@ class LoginViewModel @Inject constructor(private val authRepository: AuthReposit
             is UiAction.OnForgotClick -> handleForgotClick()
             is UiAction.OnEmailChange -> updateEmail(uiAction.email)
             is UiAction.OnPasswordChange -> updatePassword(uiAction.password)
+            is UiAction.OnGoogleSignIn -> signInWithGoogle(uiAction.idToken)
         }
     }
 
@@ -64,6 +65,19 @@ class LoginViewModel @Inject constructor(private val authRepository: AuthReposit
 
             is Resource.Error -> {
                 emitUiEffect(UiEffect.ShowToast(result.exception.message ?: "Error"))
+            }
+        }
+    }
+
+    private fun signInWithGoogle(idToken: String) = viewModelScope.launch {
+        when (val result = authRepository.signInWithGoogle(idToken)) {
+            is Resource.Success -> {
+                emitUiEffect(UiEffect.ShowToast(result.data))
+                emitUiEffect(UiEffect.NavigateToHome)
+            }
+
+            is Resource.Error -> {
+                emitUiEffect(UiEffect.ShowToast(result.exception.message.orEmpty()))
             }
         }
     }

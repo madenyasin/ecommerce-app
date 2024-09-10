@@ -1,6 +1,9 @@
 package com.yasinmaden.navigationss.ui.login
 
+import android.app.Activity
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +21,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +34,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.yasinmaden.navigationss.R
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
@@ -82,7 +89,8 @@ fun LoginScreen(
             onPasswordChange = { onAction(UiAction.OnPasswordChange(it)) },
             onClick = { onAction(UiAction.OnLoginClick) },
             onSignUpClick = { onAction(UiAction.OnSignUpClick) },
-            onForgotClick = { onAction(UiAction.OnForgotClick) }
+            onForgotClick = { onAction(UiAction.OnForgotClick) },
+            onGoogleSignIn = { idToken -> onAction(UiAction.OnGoogleSignIn(idToken)) }
         )
     }
 }
@@ -95,8 +103,30 @@ fun LoginContent(
     onPasswordChange: (String) -> Unit,
     onClick: () -> Unit,
     onSignUpClick: () -> Unit,
-    onForgotClick: () -> Unit
+    onForgotClick: () -> Unit,
+    onGoogleSignIn: (String) -> Unit // Function to trigger Google Sign-In
+
 ) {
+    val context = LocalContext.current
+    val activity = context as Activity
+
+    val googleSignInClient = remember {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        GoogleSignIn.getClient(activity, gso)
+    }
+
+    val googleSignInLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val account: GoogleSignInAccount? = GoogleSignIn.getSignedInAccountFromIntent(result.data).result
+        account?.idToken?.let { idToken ->
+            onGoogleSignIn(idToken) // Pass the ID token to ViewModel
+        } ?: Toast.makeText(context, "Google sign-in failed", Toast.LENGTH_SHORT).show()
+    }
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -175,21 +205,12 @@ fun LoginContent(
             ) {
                 SocialMediaButton(
                     modifier = Modifier,
-                    onClick = {},
+                    onClick = {
+                        googleSignInLauncher.launch(googleSignInClient.signInIntent)
+
+                    },
                     image = painterResource(R.drawable.google_logo),
                     name = "Google"
-                )
-                SocialMediaButton(
-                    modifier = Modifier,
-                    onClick = {},
-                    image = painterResource(R.drawable.facebook_logo),
-                    name = "Facebook"
-                )
-                SocialMediaButton(
-                    modifier = Modifier,
-                    onClick = {},
-                    image = painterResource(R.drawable.github_logo),
-                    name = "Github"
                 )
             }
         }

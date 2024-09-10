@@ -1,11 +1,21 @@
 package com.yasinmaden.navigationss.ui.navigation
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.MaterialTheme
+import com.google.firebase.Firebase
+import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import com.yasinmaden.navigationss.ui.components.ScreenContent
 
@@ -23,6 +33,25 @@ fun HomeNavGraph(navController: NavHostController) {
                     navController.navigate(Graph.DETAILS)
                 }
             )
+            Column(
+                Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+
+                Button(
+                    onClick = {
+                        provideFirebaseAuth().signOut()
+                        TODO("Navigate to login screen")
+
+                    }
+                ) {
+                    Text(
+                        text = "Sign Out",
+                        fontSize = MaterialTheme.typography.title1.fontSize,
+                    )
+                }
+            }
         }
         composable(route = BottomBarScreen.Profile.route) {
             ScreenContent(

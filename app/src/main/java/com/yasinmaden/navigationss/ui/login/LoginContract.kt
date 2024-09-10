@@ -14,6 +14,8 @@ object LoginContract {
         object OnForgotClick : UiAction()
         data class OnEmailChange(val email: String) : UiAction()   // New action for email input
         data class OnPasswordChange(val password: String) : UiAction() // New action for password input
+        data class OnGoogleSignIn(val idToken: String) : UiAction() // New action
+
 
     }
 
