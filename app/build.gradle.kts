@@ -14,6 +14,7 @@ android {
     defaultConfig {
         applicationId = "com.yasinmaden.navigationss"
         minSdk = 25
+        //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

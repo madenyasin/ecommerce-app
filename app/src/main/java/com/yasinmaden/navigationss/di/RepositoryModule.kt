@@ -2,7 +2,6 @@ package com.yasinmaden.navigationss.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.yasinmaden.navigationss.data.repository.AuthRepository
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
