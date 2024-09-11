@@ -2,7 +2,6 @@ package com.yasinmaden.navigationss.ui.forgot
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiAction
 import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiEffect
 import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiState
