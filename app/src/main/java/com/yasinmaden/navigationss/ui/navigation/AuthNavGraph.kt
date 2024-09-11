@@ -3,7 +3,6 @@ package com.yasinmaden.navigationss.ui.navigation
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -49,7 +48,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
 }
 
 sealed class AuthScreen(val route: String) {
-    object Login : AuthScreen(route = "LOGIN")
-    object SignUp : AuthScreen(route = "SIGN_UP")
-    object Forgot : AuthScreen(route = "FORGOT")
+    data object Login : AuthScreen(route = "LOGIN")
+    data object SignUp : AuthScreen(route = "SIGN_UP")
+    data object Forgot : AuthScreen(route = "FORGOT")
 }

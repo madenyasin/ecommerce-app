@@ -9,9 +9,9 @@ object LoginContract {
     )
 
     sealed class UiAction {
-        object OnLoginClick : UiAction()
-        object OnSignUpClick : UiAction()
-        object OnForgotClick : UiAction()
+        data object OnLoginClick : UiAction()
+        data object OnSignUpClick : UiAction()
+        data object OnForgotClick : UiAction()
         data class OnEmailChange(val email: String) : UiAction()   // New action for email input
         data class OnPasswordChange(val password: String) : UiAction() // New action for password input
         data class OnGoogleSignIn(val idToken: String) : UiAction() // New action
@@ -21,9 +21,9 @@ object LoginContract {
 
 
     sealed class UiEffect {
-        object NavigateToSignUp : UiEffect()
-        object NavigateToForgotPassword : UiEffect()
-        object NavigateToHome : UiEffect()
+        data object NavigateToSignUp : UiEffect()
+        data object NavigateToForgotPassword : UiEffect()
+        data object NavigateToHome : UiEffect()
         data class ShowToast(val message: String) : UiEffect()
 
     }

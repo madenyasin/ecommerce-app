@@ -14,7 +14,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.MaterialTheme
-import com.google.firebase.Firebase
 import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import com.yasinmaden.navigationss.ui.components.ScreenContent
@@ -42,7 +41,14 @@ fun HomeNavGraph(navController: NavHostController) {
                 Button(
                     onClick = {
                         provideFirebaseAuth().signOut()
-                        TODO("Navigate to login screen")
+
+                        // Navigate to login screen
+                        navController.navigate(Graph.AUTHENTICATION) {
+                            popUpTo(Graph.HOME) {
+                                inclusive = true
+                            }
+                        }
+
 
                     }
                 ) {
@@ -66,6 +72,7 @@ fun HomeNavGraph(navController: NavHostController) {
             )
         }
         detailsNavGraph(navController = navController)
+        authNavGraph(navController = navController)
     }
 }
 
@@ -91,6 +98,6 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
 }
 
 sealed class DetailsScreen(val route: String) {
-    object Information : DetailsScreen(route = "INFORMATION")
-    object Overview : DetailsScreen(route = "OVERVIEW")
+    data object Information : DetailsScreen(route = "INFORMATION")
+    data object Overview : DetailsScreen(route = "OVERVIEW")
 }
