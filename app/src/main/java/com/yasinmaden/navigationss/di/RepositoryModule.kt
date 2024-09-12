@@ -2,6 +2,7 @@ package com.yasinmaden.navigationss.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.yasinmaden.navigationss.data.repository.AuthRepository
+import com.yasinmaden.navigationss.utils.GoogleSignInManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,5 +15,5 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun bindAuthRepository(auth: FirebaseAuth): AuthRepository = AuthRepository(auth)
+    fun bindAuthRepository(auth: FirebaseAuth, googleSignInManager: GoogleSignInManager): AuthRepository = AuthRepository(auth, googleSignInManager)
 }
