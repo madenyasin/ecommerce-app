@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -17,13 +20,16 @@ import androidx.wear.compose.material.MaterialTheme
 import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import com.yasinmaden.navigationss.ui.components.ScreenContent
+import com.yasinmaden.navigationss.ui.login.LoginViewModel
+import com.yasinmaden.navigationss.ui.profile.ProfileScreen
+import com.yasinmaden.navigationss.ui.profile.ProfileViewModel
 
 @Composable
 fun HomeNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = BottomBarScreen.Home.route
+        startDestination = BottomBarScreen.Profile.route
     ) {
         composable(route = BottomBarScreen.Home.route) {
             ScreenContent(
@@ -42,13 +48,6 @@ fun HomeNavGraph(navController: NavHostController) {
                     onClick = {
                         provideFirebaseAuth().signOut()
 
-                        // Navigate to login screen
-                        navController.navigate(Graph.AUTHENTICATION) {
-                            popUpTo(Graph.HOME) {
-                                inclusive = true
-                            }
-                        }
-
 
                     }
                 ) {
@@ -60,9 +59,13 @@ fun HomeNavGraph(navController: NavHostController) {
             }
         }
         composable(route = BottomBarScreen.Profile.route) {
-            ScreenContent(
-                name = BottomBarScreen.Profile.route,
-                onClick = { }
+            val viewModel: ProfileViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val uiEffect = viewModel.uiEffect
+            ProfileScreen(
+                uiState = uiState,
+                uiEffect = uiEffect,
+                onAction = viewModel::onAction
             )
         }
         composable(route = BottomBarScreen.Settings.route) {

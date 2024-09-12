@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.FirebaseAuth
+import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiAction
@@ -31,15 +33,22 @@ fun ProfileScreen(
 }
 
 @Composable
-fun ProfileContent() {
+fun ProfileContent(
+    firebaseAuth: FirebaseAuth = provideFirebaseAuth(),
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        Text(
-            text = "Profile Content",
-            fontSize = 24.sp,
-        )
+        firebaseAuth.currentUser?.let { user ->
+            Text(
+                text = "Welcome, ${user.displayName}!",
+                fontSize = 20.sp,
+            )
+
+
+        }
+
     }
 }
 
