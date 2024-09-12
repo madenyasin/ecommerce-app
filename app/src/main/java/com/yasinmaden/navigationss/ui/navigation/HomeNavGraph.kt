@@ -20,12 +20,13 @@ import androidx.wear.compose.material.MaterialTheme
 import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import com.yasinmaden.navigationss.ui.components.ScreenContent
-import com.yasinmaden.navigationss.ui.login.LoginViewModel
 import com.yasinmaden.navigationss.ui.profile.ProfileScreen
 import com.yasinmaden.navigationss.ui.profile.ProfileViewModel
+import com.yasinmaden.navigationss.utils.GoogleSignInManager
 
 @Composable
 fun HomeNavGraph(navController: NavHostController) {
+
     NavHost(
         navController = navController,
         route = Graph.HOME,
@@ -47,8 +48,18 @@ fun HomeNavGraph(navController: NavHostController) {
                 Button(
                     onClick = {
                         provideFirebaseAuth().signOut()
+                        // googleSignInClient.signOut()
+                        GoogleSignInManager(
+                            context = navController.context
+                        ).signOut()
+                        // Navigate to the Authentication screen and clear the back stack
+                        navController.navigate(Graph.AUTHENTICATION) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                inclusive =
+                                    true // Removes everything from the back stack, including the current destination
+                            }
 
-
+                        }
                     }
                 ) {
                     Text(

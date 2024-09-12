@@ -1,12 +1,16 @@
 package com.yasinmaden.navigationss.ui.login
 
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.tasks.Task
 import com.yasinmaden.navigationss.common.Resource
 import com.yasinmaden.navigationss.data.repository.AuthRepository
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiAction
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiEffect
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiState
+import com.yasinmaden.navigationss.utils.GoogleSignInManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -16,10 +20,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val authRepository: AuthRepository) :
+class LoginViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
+) :
     ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -44,18 +51,8 @@ class LoginViewModel @Inject constructor(private val authRepository: AuthReposit
         isUserLoggedIn()
     }
 
-    private fun signUp() = viewModelScope.launch {
-        when (val result = authRepository.signUp(uiState.value.email, uiState.value.password)) {
-            is Resource.Success -> {
-                emitUiEffect(UiEffect.ShowToast(result.data))
-                emitUiEffect(UiEffect.NavigateToHome)
-            }
+    fun onGoogleSignInIntent() = authRepository.getSignInIntent()
 
-            is Resource.Error -> {
-                emitUiEffect(UiEffect.ShowToast(result.exception.message.orEmpty()))
-            }
-        }
-    }
     private fun signIn() = viewModelScope.launch {
         when (val result = authRepository.signIn(uiState.value.email, uiState.value.password)) {
             is Resource.Success -> {
@@ -68,7 +65,6 @@ class LoginViewModel @Inject constructor(private val authRepository: AuthReposit
             }
         }
     }
-
     private fun signInWithGoogle(idToken: String) = viewModelScope.launch {
         when (val result = authRepository.signInWithGoogle(idToken)) {
             is Resource.Success -> {
@@ -96,15 +92,6 @@ class LoginViewModel @Inject constructor(private val authRepository: AuthReposit
 
     private fun updatePassword(password: String) {
         _uiState.update { it.copy(password = password) }
-    }
-
-
-    private fun handleLoginClick() {
-        // Handle login logic here, e.g., authentication
-        // Update state or emit effects
-        viewModelScope.launch {
-            emitUiEffect(UiEffect.NavigateToHome)
-        }
     }
 
     private fun handleSignUpClick() {

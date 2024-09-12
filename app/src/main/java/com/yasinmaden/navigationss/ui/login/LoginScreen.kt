@@ -1,6 +1,5 @@
 package com.yasinmaden.navigationss.ui.login
 
-import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,7 +22,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,9 +37,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.yasinmaden.navigationss.R
-import com.yasinmaden.navigationss.common.WEB_CLIENT_ID
+import com.yasinmaden.navigationss.data.repository.AuthRepository
+import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiAction
@@ -49,6 +47,7 @@ import com.yasinmaden.navigationss.ui.login.LoginContract.UiEffect
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiState
 import com.yasinmaden.navigationss.ui.navigation.AuthScreen
 import com.yasinmaden.navigationss.ui.navigation.Graph
+import com.yasinmaden.navigationss.utils.GoogleSignInManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -94,7 +93,13 @@ fun LoginScreen(
             onClick = { onAction(UiAction.OnLoginClick) },
             onSignUpClick = { onAction(UiAction.OnSignUpClick) },
             onForgotClick = { onAction(UiAction.OnForgotClick) },
-            onGoogleSignIn = { idToken -> onAction(UiAction.OnGoogleSignIn(idToken)) }
+            onGoogleSignIn = { idToken -> onAction(UiAction.OnGoogleSignIn(idToken)) },
+            viewModel = LoginViewModel(
+                AuthRepository(
+                    provideFirebaseAuth(),
+                    GoogleSignInManager(context)
+                )
+            )
         )
     }
 }
@@ -108,19 +113,11 @@ fun LoginContent(
     onClick: () -> Unit,
     onSignUpClick: () -> Unit,
     onForgotClick: () -> Unit,
-    onGoogleSignIn: (String) -> Unit // Function to trigger Google Sign-In
-
+    onGoogleSignIn: (String) -> Unit,
+    viewModel: LoginViewModel
 ) {
     val context = LocalContext.current
-    val activity = context as Activity
 
-    val googleSignInClient = remember {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(WEB_CLIENT_ID)
-            .requestEmail()
-            .build()
-        GoogleSignIn.getClient(activity, gso)
-    }
 
     val googleSignInLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -131,8 +128,7 @@ fun LoginContent(
             account?.idToken?.let { idToken ->
                 onGoogleSignIn(idToken) // Pass the ID token to ViewModel
             }
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             Toast.makeText(context, "Google sign-in failed", Toast.LENGTH_SHORT).show()
         }
 
@@ -209,9 +205,7 @@ fun LoginContent(
             )
 
             Button(
-                onClick = {
-                    googleSignInLauncher.launch(googleSignInClient.signInIntent)
-                },
+                onClick = { googleSignInLauncher.launch(viewModel.onGoogleSignInIntent()) },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEA4335)),
                 modifier = Modifier
