@@ -4,6 +4,7 @@ import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -25,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -38,9 +41,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.yasinmaden.navigationss.R
+import com.yasinmaden.navigationss.common.WEB_CLIENT_ID
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
-import com.yasinmaden.navigationss.ui.components.SocialMediaButton
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiAction
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiEffect
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiState
@@ -73,6 +76,7 @@ fun LoginScreen(
                 is UiEffect.NavigateToHome -> {
                     navController.navigate(Graph.HOME)
                 }
+
                 is UiEffect.ShowToast -> {
                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 }
@@ -112,7 +116,7 @@ fun LoginContent(
 
     val googleSignInClient = remember {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestIdToken(WEB_CLIENT_ID)
             .requestEmail()
             .build()
         GoogleSignIn.getClient(activity, gso)
@@ -121,10 +125,17 @@ fun LoginContent(
     val googleSignInLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        val account: GoogleSignInAccount? = GoogleSignIn.getSignedInAccountFromIntent(result.data).result
-        account?.idToken?.let { idToken ->
-            onGoogleSignIn(idToken) // Pass the ID token to ViewModel
-        } ?: Toast.makeText(context, "Google sign-in failed", Toast.LENGTH_SHORT).show()
+        try {
+            val account: GoogleSignInAccount? =
+                GoogleSignIn.getSignedInAccountFromIntent(result.data).result
+            account?.idToken?.let { idToken ->
+                onGoogleSignIn(idToken) // Pass the ID token to ViewModel
+            }
+        }
+        catch (e: Exception){
+            Toast.makeText(context, "Google sign-in failed", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     Box(
@@ -197,22 +208,41 @@ fun LoginContent(
                 modifier = Modifier.padding(top = 16.dp)
             )
 
-            Row(
+            Button(
+                onClick = {
+                    googleSignInLauncher.launch(googleSignInClient.signInIntent)
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEA4335)),
                 modifier = Modifier
+                    .padding(top = 16.dp)
                     .fillMaxWidth()
-                    .padding(32.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                SocialMediaButton(
-                    modifier = Modifier,
-                    onClick = {
-                        googleSignInLauncher.launch(googleSignInClient.signInIntent)
+                    .size(height = 55.dp, width = 150.dp)
 
-                    },
-                    image = painterResource(R.drawable.google_logo),
-                    name = "Google"
-                )
+            ) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.google_logo),
+                        null,
+                        modifier = Modifier.size(15.dp),
+                        colorFilter = ColorFilter.tint(Color.White)
+                    )
+                    Text(
+                        text = "Google",
+                        modifier = Modifier.padding(start = 8.dp),
+                        fontSize = 17.sp
+                    )
+                }
             }
+
+
         }
         Button(
             onClick = onClick,
