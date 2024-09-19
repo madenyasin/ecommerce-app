@@ -45,45 +45,8 @@ fun HomeNavGraph(navController: NavHostController) {
                 verticalArrangement = Arrangement.Center
             ) {
 
-                Button(
-                    onClick = {
-                        provideFirebaseAuth().signOut()
-                        // googleSignInClient.signOut()
-                        GoogleSignInManager(
-                            context = navController.context
-                        ).signOut()
-                        // Navigate to the Authentication screen and clear the back stack
-                        navController.navigate(Graph.AUTHENTICATION) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                inclusive =
-                                    true // Removes everything from the back stack, including the current destination
-                            }
 
-                        }
-                    }
-                ) {
-                    Text(
-                        text = "Sign Out",
-                        fontSize = MaterialTheme.typography.title1.fontSize,
-                    )
-                }
             }
-        }
-        composable(route = BottomBarScreen.Profile.route) {
-            val viewModel: ProfileViewModel = hiltViewModel()
-            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val uiEffect = viewModel.uiEffect
-            ProfileScreen(
-                uiState = uiState,
-                uiEffect = uiEffect,
-                onAction = viewModel::onAction
-            )
-        }
-        composable(route = BottomBarScreen.Settings.route) {
-            ScreenContent(
-                name = BottomBarScreen.Settings.route,
-                onClick = { }
-            )
         }
         composable(route = BottomBarScreen.Wishlist.route) {
             ScreenContent(
@@ -97,6 +60,18 @@ fun HomeNavGraph(navController: NavHostController) {
                 onClick = { }
             )
         }
+        composable(route = BottomBarScreen.Profile.route) {
+            val viewModel: ProfileViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val uiEffect = viewModel.uiEffect
+            ProfileScreen(
+                uiState = uiState,
+                uiEffect = uiEffect,
+                onAction = viewModel::onAction,
+                navController = navController
+            )
+        }
+
         detailsNavGraph(navController = navController)
         authNavGraph(navController = navController)
     }
