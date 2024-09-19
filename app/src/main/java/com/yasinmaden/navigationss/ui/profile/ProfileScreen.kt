@@ -24,9 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
@@ -131,55 +128,6 @@ fun ProfileContent(
                 Text(text = "No user is logged in.", fontSize = 18.sp)
             }
         }
-    }
-}
-
-@Composable
-fun ProfileContentMain(
-    firebaseAuth: FirebaseAuth = provideFirebaseAuth(),
-    navController: NavHostController,
-) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            firebaseAuth.currentUser?.let { user ->
-                Text(
-                    text = "Welcome, ${user.displayName}!",
-                    fontSize = 20.sp,
-                )
-                Button(
-                    onClick = {
-                        try {
-                            firebaseAuth.signOut()
-                            // googleSignInClient.signOut()
-                            GoogleSignInManager(
-                                context = navController.context
-                            ).signOut()
-                            // Navigate to the Authentication screen and clear the back stack
-                            navController.navigate(Graph.AUTHENTICATION) {
-                                popUpTo(navController.graph.startDestinationId) {
-                                    inclusive =
-                                        true // Removes everything from the back stack, including the current destination
-                                }
-                            }
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-
-                    }
-                ) {
-                    Text(text = "Sign Out", fontSize = 20.sp)
-                }
-            }
-        }
-
-
     }
 }
 
