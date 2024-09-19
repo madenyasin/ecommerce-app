@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
-import com.yasinmaden.navigationss.ui.navigation.AuthScreen
+import com.yasinmaden.navigationss.navigation.AuthScreen
 import com.yasinmaden.navigationss.ui.signup.SignUpContract.UiAction
 import com.yasinmaden.navigationss.ui.signup.SignUpContract.UiEffect
 import com.yasinmaden.navigationss.ui.signup.SignUpContract.UiState

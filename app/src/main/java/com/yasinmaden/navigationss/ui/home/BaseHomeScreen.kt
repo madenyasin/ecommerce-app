@@ -21,7 +21,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.material.ContentAlpha
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
-import com.yasinmaden.navigationss.ui.navigation.HomeNavGraph
+import com.yasinmaden.navigationss.navigation.HomeNavGraph
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

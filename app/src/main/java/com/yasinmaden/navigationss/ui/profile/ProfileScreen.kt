@@ -28,7 +28,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
-import com.yasinmaden.navigationss.ui.navigation.Graph
+import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiAction
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiEffect
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiState

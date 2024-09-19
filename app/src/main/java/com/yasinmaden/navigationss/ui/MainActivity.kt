@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
 import androidx.activity.enableEdgeToEdge
-import com.yasinmaden.navigationss.ui.navigation.RootNavigationGraph
+import com.yasinmaden.navigationss.navigation.RootNavigationGraph
 import com.yasinmaden.navigationss.ui.theme.MyappTheme
 import dagger.hilt.android.AndroidEntryPoint
 

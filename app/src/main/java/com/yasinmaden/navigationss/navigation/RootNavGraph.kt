@@ -1,4 +1,4 @@
-package com.yasinmaden.navigationss.ui.navigation
+package com.yasinmaden.navigationss.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

@@ -38,7 +38,7 @@ import com.yasinmaden.navigationss.ui.components.LoadingBar
 import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiAction
 import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiEffect
 import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiState
-import com.yasinmaden.navigationss.ui.navigation.AuthScreen
+import com.yasinmaden.navigationss.navigation.AuthScreen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
