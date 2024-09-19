@@ -40,13 +40,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.yasinmaden.navigationss.R
 import com.yasinmaden.navigationss.data.repository.AuthRepository
 import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
+import com.yasinmaden.navigationss.navigation.AuthScreen
+import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiAction
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiEffect
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiState
-import com.yasinmaden.navigationss.ui.navigation.AuthScreen
-import com.yasinmaden.navigationss.ui.navigation.Graph
 import com.yasinmaden.navigationss.utils.GoogleSignInManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow

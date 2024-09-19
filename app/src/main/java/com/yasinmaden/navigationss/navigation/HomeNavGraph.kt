@@ -1,12 +1,7 @@
-package com.yasinmaden.navigationss.ui.navigation
+package com.yasinmaden.navigationss.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -16,6 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import com.yasinmaden.navigationss.ui.components.ScreenContent
+import com.yasinmaden.navigationss.ui.home.HomeScreen
+import com.yasinmaden.navigationss.ui.home.HomeViewModel
 import com.yasinmaden.navigationss.ui.profile.ProfileScreen
 import com.yasinmaden.navigationss.ui.profile.ProfileViewModel
 
@@ -28,20 +25,15 @@ fun HomeNavGraph(navController: NavHostController) {
         startDestination = BottomBarScreen.Profile.route
     ) {
         composable(route = BottomBarScreen.Home.route) {
-            ScreenContent(
-                name = BottomBarScreen.Home.route,
-                onClick = {
-                    navController.navigate(Graph.DETAILS)
-                }
+            val viewModel: HomeViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val uiEffect = viewModel.uiEffect
+            HomeScreen(
+                uiState = uiState,
+                uiEffect = uiEffect,
+                onAction = viewModel::onAction,
+                navController = navController
             )
-            Column(
-                Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-
-
-            }
         }
         composable(route = BottomBarScreen.Wishlist.route) {
             ScreenContent(

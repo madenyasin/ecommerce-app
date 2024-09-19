@@ -1,10 +1,10 @@
-package com.yasinmaden.navigationss.ui.navigation
+package com.yasinmaden.navigationss.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.yasinmaden.navigationss.ui.home.HomeScreen
+import com.yasinmaden.navigationss.ui.home.BaseHomeScreen
 
 
 @Composable
@@ -16,7 +16,7 @@ fun RootNavigationGraph(navController: NavHostController) {
     ) {
         authNavGraph(navController = navController)
         composable(route = Graph.HOME) {
-            HomeScreen()
+            BaseHomeScreen()
         }
     }
 }
