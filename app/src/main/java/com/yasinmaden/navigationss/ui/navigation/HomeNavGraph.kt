@@ -3,7 +3,6 @@ package com.yasinmaden.navigationss.ui.navigation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -15,14 +14,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.MaterialTheme
-import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import com.yasinmaden.navigationss.ui.components.ScreenContent
 import com.yasinmaden.navigationss.ui.profile.ProfileScreen
 import com.yasinmaden.navigationss.ui.profile.ProfileViewModel
-import com.yasinmaden.navigationss.utils.GoogleSignInManager
 
 @Composable
 fun HomeNavGraph(navController: NavHostController) {

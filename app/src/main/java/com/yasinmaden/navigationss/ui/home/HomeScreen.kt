@@ -2,7 +2,9 @@ package com.yasinmaden.navigationss.ui.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigation
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor

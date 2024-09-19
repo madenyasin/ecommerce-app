@@ -1,6 +1,5 @@
 package com.yasinmaden.navigationss.ui.profile
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import coil.compose.rememberImagePainter
 import com.google.firebase.auth.FirebaseAuth
 import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
