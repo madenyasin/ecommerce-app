@@ -1,5 +1,6 @@
 package com.yasinmaden.navigationss.ui.profile
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
@@ -41,6 +46,16 @@ fun ProfileScreen(
     onAction: (UiAction) -> Unit,
     navController: NavHostController,
 ) {
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        uiEffect.collect { effect ->
+            when (effect) {
+                is UiEffect.ShowToast -> {
+                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
     when {
         uiState.isLoading -> LoadingBar()
         uiState.list.isNotEmpty() -> EmptyScreen()
@@ -49,10 +64,12 @@ fun ProfileScreen(
         )
     }
 }
+
 @Composable
 fun ProfileContent(
-    firebaseAuth: FirebaseAuth = provideFirebaseAuth(),
     navController: NavHostController,
+    firebaseAuth: FirebaseAuth = provideFirebaseAuth(),
+    googleSignInManager: GoogleSignInManager = GoogleSignInManager(navController.context),
 ) {
     val user = firebaseAuth.currentUser
 
@@ -94,13 +111,18 @@ fun ProfileContent(
                 // Sign-out button
                 Button(
                     onClick = {
-                        firebaseAuth.signOut()
-                        GoogleSignInManager(navController.context).signOut()
-                        navController.navigate(Graph.AUTHENTICATION) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                inclusive = true // Clear back stack
+                        try {
+                            firebaseAuth.signOut()
+                            googleSignInManager.signOut()
+                            navController.navigate(Graph.AUTHENTICATION) {
+                                popUpTo(navController.graph.startDestinationId) {
+                                    inclusive = true // Clear back stack
+                                }
                             }
+                        } catch (e: Exception) {
+                            UiEffect.ShowToast(e.message.toString())
                         }
+
                     }
                 ) {
                     Text(text = "Sign Out", fontSize = 20.sp)
@@ -111,6 +133,7 @@ fun ProfileContent(
         }
     }
 }
+
 @Composable
 fun ProfileContentMain(
     firebaseAuth: FirebaseAuth = provideFirebaseAuth(),

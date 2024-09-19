@@ -129,7 +129,7 @@ fun LoginContent(
                 onGoogleSignIn(idToken) // Pass the ID token to ViewModel
             }
         } catch (e: Exception) {
-            Toast.makeText(context, "Google sign-in failed", Toast.LENGTH_SHORT).show()
+            UiEffect.ShowToast(e.message.toString())
         }
 
     }
