@@ -85,6 +85,18 @@ fun HomeNavGraph(navController: NavHostController) {
                 onClick = { }
             )
         }
+        composable(route = BottomBarScreen.Wishlist.route) {
+            ScreenContent(
+                name = BottomBarScreen.Wishlist.route,
+                onClick = { }
+            )
+        }
+        composable(route = BottomBarScreen.Cart.route) {
+            ScreenContent(
+                name = BottomBarScreen.Cart.route,
+                onClick = { }
+            )
+        }
         detailsNavGraph(navController = navController)
         authNavGraph(navController = navController)
     }

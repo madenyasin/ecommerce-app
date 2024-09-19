@@ -28,4 +28,14 @@ sealed class BottomBarScreen(
         title = "SETTINGS",
         icon = Icons.Default.Settings
     )
+    data object Wishlist : BottomBarScreen(
+        route = "WISHLIST",
+        title = "WISHLIST",
+        icon = Icons.Default.Settings
+    )
+    data object Cart : BottomBarScreen(
+        route = "CART",
+        title = "CART",
+        icon = Icons.Default.Settings
+    )
 }
