@@ -3,7 +3,6 @@ package com.yasinmaden.navigationss.ui.navigation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -15,14 +14,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.MaterialTheme
-import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import com.yasinmaden.navigationss.ui.components.ScreenContent
 import com.yasinmaden.navigationss.ui.profile.ProfileScreen
 import com.yasinmaden.navigationss.ui.profile.ProfileViewModel
-import com.yasinmaden.navigationss.utils.GoogleSignInManager
 
 @Composable
 fun HomeNavGraph(navController: NavHostController) {
@@ -45,45 +40,8 @@ fun HomeNavGraph(navController: NavHostController) {
                 verticalArrangement = Arrangement.Center
             ) {
 
-                Button(
-                    onClick = {
-                        provideFirebaseAuth().signOut()
-                        // googleSignInClient.signOut()
-                        GoogleSignInManager(
-                            context = navController.context
-                        ).signOut()
-                        // Navigate to the Authentication screen and clear the back stack
-                        navController.navigate(Graph.AUTHENTICATION) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                inclusive =
-                                    true // Removes everything from the back stack, including the current destination
-                            }
 
-                        }
-                    }
-                ) {
-                    Text(
-                        text = "Sign Out",
-                        fontSize = MaterialTheme.typography.title1.fontSize,
-                    )
-                }
             }
-        }
-        composable(route = BottomBarScreen.Profile.route) {
-            val viewModel: ProfileViewModel = hiltViewModel()
-            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val uiEffect = viewModel.uiEffect
-            ProfileScreen(
-                uiState = uiState,
-                uiEffect = uiEffect,
-                onAction = viewModel::onAction
-            )
-        }
-        composable(route = BottomBarScreen.Settings.route) {
-            ScreenContent(
-                name = BottomBarScreen.Settings.route,
-                onClick = { }
-            )
         }
         composable(route = BottomBarScreen.Wishlist.route) {
             ScreenContent(
@@ -97,6 +55,18 @@ fun HomeNavGraph(navController: NavHostController) {
                 onClick = { }
             )
         }
+        composable(route = BottomBarScreen.Profile.route) {
+            val viewModel: ProfileViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val uiEffect = viewModel.uiEffect
+            ProfileScreen(
+                uiState = uiState,
+                uiEffect = uiEffect,
+                onAction = viewModel::onAction,
+                navController = navController
+            )
+        }
+
         detailsNavGraph(navController = navController)
         authNavGraph(navController = navController)
     }

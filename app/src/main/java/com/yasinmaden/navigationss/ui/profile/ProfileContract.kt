@@ -8,5 +8,7 @@ object ProfileContract {
 
     sealed class UiAction
 
-    sealed class UiEffect
+    sealed class UiEffect{
+        data class ShowToast(val message: String) : UiEffect()
+    }
 }

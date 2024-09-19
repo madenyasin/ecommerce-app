@@ -1,9 +1,10 @@
 package com.yasinmaden.navigationss.ui.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomBarScreen(
@@ -16,26 +17,19 @@ sealed class BottomBarScreen(
         title = "HOME",
         icon = Icons.Default.Home
     )
-
-    data object Profile : BottomBarScreen(
-        route = "PROFILE",
-        title = "PROFILE",
-        icon = Icons.Default.Person
-    )
-
-    data object Settings : BottomBarScreen(
-        route = "SETTINGS",
-        title = "SETTINGS",
-        icon = Icons.Default.Settings
-    )
     data object Wishlist : BottomBarScreen(
         route = "WISHLIST",
         title = "WISHLIST",
-        icon = Icons.Default.Settings
+        icon = Icons.Default.Favorite
     )
     data object Cart : BottomBarScreen(
         route = "CART",
         title = "CART",
-        icon = Icons.Default.Settings
+        icon = Icons.Default.ShoppingCart
+    )
+    data object Profile : BottomBarScreen(
+        route = "PROFILE",
+        title = "PROFILE",
+        icon = Icons.Default.Person
     )
 }
