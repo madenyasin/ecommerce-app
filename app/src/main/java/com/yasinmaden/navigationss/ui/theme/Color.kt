@@ -11,6 +11,8 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val GoogleButtonColor = Color(0xFFEA4335)
+val NavigationItemTintColor = Color(0xFF8F959E)
+val NavigationItemTextColor = Color(0xFF9775FA)
 
 val Gray = Color.Gray
 val DarkGray = Color.DarkGray
