@@ -1,35 +1,30 @@
 package com.yasinmaden.navigationss.ui.components
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.ui.graphics.vector.ImageVector
+import com.yasinmaden.navigationss.R
 
 sealed class BottomBarScreen(
     val route: String,
     val title: String,
-    val icon: ImageVector
+    val iconRes: Int
 ) {
     data object Home : BottomBarScreen(
         route = "HOME",
-        title = "HOME",
-        icon = Icons.Default.Home
+        title = "Home",
+        iconRes = R.drawable.home
     )
     data object Wishlist : BottomBarScreen(
         route = "WISHLIST",
-        title = "WISHLIST",
-        icon = Icons.Default.Favorite
+        title = "Wishlist",
+        iconRes = R.drawable.favorites
     )
     data object Cart : BottomBarScreen(
         route = "CART",
-        title = "CART",
-        icon = Icons.Default.ShoppingCart
+        title = "Cart",
+        iconRes = R.drawable.cart
     )
     data object Profile : BottomBarScreen(
         route = "PROFILE",
-        title = "PROFILE",
-        icon = Icons.Default.Person
+        title = "Profile",
+        iconRes = R.drawable.person
     )
 }

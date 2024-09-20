@@ -1,18 +1,19 @@
 package com.yasinmaden.navigationss.ui.home
 
+//noinspection UsingMaterialAndMaterial3Libraries
+//noinspection UsingMaterialAndMaterial3Libraries
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigation
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -20,8 +21,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.material.ContentAlpha
-import com.yasinmaden.navigationss.ui.components.BottomBarScreen
+import androidx.wear.compose.material.Text
 import com.yasinmaden.navigationss.navigation.HomeNavGraph
+import com.yasinmaden.navigationss.ui.components.BottomBarScreen
+import com.yasinmaden.navigationss.ui.theme.NavigationItemTextColor
+import com.yasinmaden.navigationss.ui.theme.White
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -46,7 +50,9 @@ fun BottomBar(navController: NavHostController) {
 
     val bottomBarDestination = screens.any { it.route == currentDestination?.route }
     if (bottomBarDestination) {
-        BottomNavigation {
+        BottomNavigation(
+            backgroundColor = White,
+        ) {
             screens.forEach { screen ->
                 AddItem(
                     screen = screen,
@@ -64,19 +70,23 @@ fun RowScope.AddItem(
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
+    val isSelected = currentDestination?.hierarchy?.any {
+        it.route == screen.route
+    } == true
+
     BottomNavigationItem(
-        label = {
-            Text(text = screen.title, fontSize = MaterialTheme.typography.labelSmall.fontSize)
-        },
         icon = {
-            Icon(
-                imageVector = screen.icon,
-                contentDescription = "Navigation Icon"
-            )
+            if (isSelected) {
+                Text(text = screen.title, color = NavigationItemTextColor)
+            } else {
+                Icon(
+                    imageVector = ImageVector.vectorResource(screen.iconRes),
+                    contentDescription = "Navigation Icon",
+                    tint = LocalContentColor.current.copy(alpha = ContentAlpha.disabled)
+                )
+            }
         },
-        selected = currentDestination?.hierarchy?.any {
-            it.route == screen.route
-        } == true,
+        selected = isSelected,
         unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
         onClick = {
             navController.navigate(screen.route) {
