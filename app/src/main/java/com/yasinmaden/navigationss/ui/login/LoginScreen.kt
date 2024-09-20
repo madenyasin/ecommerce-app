@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -47,6 +46,11 @@ import com.yasinmaden.navigationss.ui.components.LoadingBar
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiAction
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiEffect
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiState
+import com.yasinmaden.navigationss.ui.theme.DarkGray
+import com.yasinmaden.navigationss.ui.theme.GoogleButtonColor
+import com.yasinmaden.navigationss.ui.theme.Gray
+import com.yasinmaden.navigationss.ui.theme.Red
+import com.yasinmaden.navigationss.ui.theme.White
 import com.yasinmaden.navigationss.utils.GoogleSignInManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -150,7 +154,7 @@ fun LoginContent(
                 text = "Please enter your data to continue",
                 fontSize = 15.sp,
                 style = MaterialTheme.typography.bodySmall,
-                color = Color.Gray
+                color = Gray
             )
             OutlinedTextField(
                 value = email,
@@ -184,7 +188,7 @@ fun LoginContent(
                 Text(
                     text = "Join Us!",
                     fontSize = 15.sp,
-                    color = Color.DarkGray,
+                    color = DarkGray,
                     modifier = Modifier
                         .padding(top = 8.dp)
                         .clickable { onSignUpClick.invoke() }
@@ -192,7 +196,7 @@ fun LoginContent(
                 Text(
                     text = "Forgot Password?",
                     fontSize = 15.sp,
-                    color = Color.Red,
+                    color = Red,
                     modifier = Modifier
                         .padding(top = 8.dp)
                         .clickable { onForgotClick.invoke() }
@@ -200,14 +204,14 @@ fun LoginContent(
             }
             Text(
                 "Or login with social account",
-                color = Color.Gray,
+                color = Gray,
                 modifier = Modifier.padding(top = 16.dp)
             )
 
             Button(
                 onClick = { googleSignInLauncher.launch(viewModel.onGoogleSignInIntent()) },
                 shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEA4335)),
+                colors = ButtonDefaults.buttonColors(containerColor = GoogleButtonColor),
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .fillMaxWidth()
@@ -226,7 +230,7 @@ fun LoginContent(
                         painter = painterResource(R.drawable.google_logo),
                         null,
                         modifier = Modifier.size(15.dp),
-                        colorFilter = ColorFilter.tint(Color.White)
+                        colorFilter = ColorFilter.tint(White)
                     )
                     Text(
                         text = "Google",

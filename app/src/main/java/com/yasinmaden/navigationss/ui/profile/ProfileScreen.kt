@@ -32,6 +32,7 @@ import com.yasinmaden.navigationss.ui.components.LoadingBar
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiAction
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiEffect
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiState
+import com.yasinmaden.navigationss.ui.theme.Gray
 import com.yasinmaden.navigationss.utils.GoogleSignInManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -100,7 +101,7 @@ fun ProfileContent(
                 Text(
                     text = "Email: ${it.email ?: "No Email"}",
                     fontSize = 16.sp,
-                    color = Color.Gray
+                    color = Gray
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))

@@ -39,6 +39,7 @@ import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiAction
 import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiEffect
 import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiState
 import com.yasinmaden.navigationss.navigation.AuthScreen
+import com.yasinmaden.navigationss.ui.theme.Gray
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -138,7 +139,7 @@ fun ForgotContent(
                 "Please write your email to receive a" +
                         "\nconfirmation code to set a new password.",
                 textAlign = TextAlign.Center,
-                color = Color.Gray,
+                color = Gray,
                 fontSize = 13.sp
             )
         }

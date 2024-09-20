@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.yasinmaden.navigationss.ui.theme.Black
 
 @Composable
 fun EmptyScreen() {
@@ -29,7 +30,7 @@ fun EmptyScreen() {
         )
         Text(
             text = "No items found",
-            color = Color.Black,
+            color = Black,
             fontSize = 20.sp,
         )
     }
