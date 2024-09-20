@@ -1,10 +1,11 @@
 package com.yasinmaden.navigationss.ui.home
 
-//noinspection UsingMaterialAndMaterial3Libraries
-//noinspection UsingMaterialAndMaterial3Libraries
+
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigation
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -13,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -25,6 +25,7 @@ import androidx.wear.compose.material.Text
 import com.yasinmaden.navigationss.navigation.HomeNavGraph
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import com.yasinmaden.navigationss.ui.theme.NavigationItemTextColor
+import com.yasinmaden.navigationss.ui.theme.NavigationItemTintColor
 import com.yasinmaden.navigationss.ui.theme.White
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -82,7 +83,7 @@ fun RowScope.AddItem(
                 Icon(
                     imageVector = ImageVector.vectorResource(screen.iconRes),
                     contentDescription = "Navigation Icon",
-                    tint = LocalContentColor.current.copy(alpha = ContentAlpha.disabled)
+                    tint = NavigationItemTintColor
                 )
             }
         },
