@@ -81,4 +81,13 @@ dependencies {
 
     implementation(libs.coil.compose)
 
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
+    implementation(libs.gson)
+
+
+
 }
