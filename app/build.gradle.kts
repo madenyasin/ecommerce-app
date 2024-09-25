@@ -53,7 +53,6 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.compose.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -70,7 +69,6 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.navigation.compose)
-    implementation (libs.androidx.material)
 
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
@@ -81,4 +79,9 @@ dependencies {
 
     implementation(libs.coil.compose)
 
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.gson)
 }
