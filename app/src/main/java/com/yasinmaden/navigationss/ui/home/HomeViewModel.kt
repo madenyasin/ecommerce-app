@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yasinmaden.navigationss.common.Resource
 import com.yasinmaden.navigationss.data.model.product.ProductResponse
+import com.yasinmaden.navigationss.domain.usecase.GetCategoryUseCase
 import com.yasinmaden.navigationss.domain.usecase.GetProductUseCase
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getProductUseCase: GetProductUseCase
+    private val getProductUseCase: GetProductUseCase,
+    private val getCategoryUseCase: GetCategoryUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeContract.UiState())
     val uiState: StateFlow<HomeContract.UiState> = _uiState.asStateFlow()
@@ -41,13 +43,18 @@ class HomeViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e("loadProducts", "Ürünler yüklenirken hata oluştu: ${e.message}")
             }
+            try {
+                loadCategories()
+            } catch (e: Exception) {
+                Log.e("loadCategories", "Kategoriler yüklenirken hata oluştu: ${e.message}")
+            }
         }
     }
 
-    private suspend fun loadProducts() : Resource<ProductResponse>{
+    private suspend fun loadProducts(): Resource<ProductResponse> {
         Log.d("loadProducts", "Veri çekme işlemi başladı") // Başlangıç logu
         _uiState.update { it.copy(isLoading = true) }
-        when(val request = getProductUseCase.execute()){
+        when (val request = getProductUseCase.execute()) {
             is Resource.Success -> {
                 Log.d("loadProducts", "Veri başarıyla çekildi. Ürünler listeleniyor...")
 
@@ -58,13 +65,41 @@ class HomeViewModel @Inject constructor(
                 _uiState.update { it.copy(products = request.data.products, isLoading = false) }
                 return Resource.Success(data = request.data)
             }
+
             is Resource.Error -> {
-                Log.e("loadProducts", "Veri çekme hatası: ${request.exception.message}") // Hata durumunda log
+                Log.e(
+                    "loadProducts",
+                    "Veri çekme hatası: ${request.exception.message}"
+                ) // Hata durumunda log
                 _uiState.update { it.copy(isLoading = false) }
                 return Resource.Error(exception = request.exception)
             }
         }
     }
+
+    private suspend fun loadCategories(): Resource<List<String>> {
+        Log.d("loadCategories", "Veri çekme işlemi başladı")
+        _uiState.update { it.copy(isLoading = true) }
+        when (val request = getCategoryUseCase.execute()) {
+            is Resource.Success -> {
+                Log.d("loadCategories", "Veri başarıyla çekildi. Kategoriler listeleniyor...")
+
+                request.data.forEach{ category->
+                    Log.d("loadCategories", "Kategori: $category")
+                }
+
+                _uiState.update { it.copy(categories = request.data, isLoading = false) }
+                return Resource.Success(data = request.data)
+            }
+
+            is Resource.Error -> {
+                Log.e("loadCategories", "Veri çekme hatası: ${request.exception.message}")
+                _uiState.update { it.copy(isLoading = false) }
+                return Resource.Error(exception = request.exception)
+            }
+        }
+    }
+
     private fun updateSelectedTab(screen: BottomBarScreen) = viewModelScope.launch {
         _uiState.update { it.copy(currentTab = screen) }
         emitUiEffect(HomeContract.UiEffect.NavigateTo(screen.route))

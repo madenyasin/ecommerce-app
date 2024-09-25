@@ -8,7 +8,8 @@ object HomeContract {
         val isLoading: Boolean = false,
         val list: List<String> = emptyList(),
         val currentTab: BottomBarScreen = BottomBarScreen.Home,
-        val products: List<ProductDetails> = emptyList()
+        val products: List<ProductDetails> = emptyList(),
+        val categories: List<String> = emptyList()
     )
 
     sealed class UiAction {
