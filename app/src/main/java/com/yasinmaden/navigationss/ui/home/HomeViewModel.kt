@@ -1,7 +1,11 @@
 package com.yasinmaden.navigationss.ui.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yasinmaden.navigationss.common.Resource
+import com.yasinmaden.navigationss.data.model.product.ProductResponse
+import com.yasinmaden.navigationss.domain.usecase.GetProductUseCase
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -15,7 +19,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val getProductUseCase: GetProductUseCase
+) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeContract.UiState())
     val uiState: StateFlow<HomeContract.UiState> = _uiState.asStateFlow()
 
@@ -25,6 +31,38 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     fun onAction(uiAction: HomeContract.UiAction) {
         when (uiAction) {
             is HomeContract.UiAction.OnTabSelected -> updateSelectedTab(uiAction.screen)
+        }
+    }
+
+    init {
+        viewModelScope.launch {
+            try {
+                loadProducts()
+            } catch (e: Exception) {
+                Log.e("loadProducts", "Ürünler yüklenirken hata oluştu: ${e.message}")
+            }
+        }
+    }
+
+    private suspend fun loadProducts() : Resource<ProductResponse>{
+        Log.d("loadProducts", "Veri çekme işlemi başladı") // Başlangıç logu
+        _uiState.update { it.copy(isLoading = true) }
+        when(val request = getProductUseCase.execute()){
+            is Resource.Success -> {
+                Log.d("loadProducts", "Veri başarıyla çekildi. Ürünler listeleniyor...")
+
+                // Her bir ürünü alt alta logluyoruz
+                request.data.products.forEach { product ->
+                    Log.d("loadProducts", "Ürün: $product")
+                }
+                _uiState.update { it.copy(products = request.data.products, isLoading = false) }
+                return Resource.Success(data = request.data)
+            }
+            is Resource.Error -> {
+                Log.e("loadProducts", "Veri çekme hatası: ${request.exception.message}") // Hata durumunda log
+                _uiState.update { it.copy(isLoading = false) }
+                return Resource.Error(exception = request.exception)
+            }
         }
     }
     private fun updateSelectedTab(screen: BottomBarScreen) = viewModelScope.launch {
