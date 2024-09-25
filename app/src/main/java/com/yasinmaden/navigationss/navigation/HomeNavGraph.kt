@@ -2,6 +2,7 @@ package com.yasinmaden.navigationss.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -17,12 +18,16 @@ import com.yasinmaden.navigationss.ui.profile.ProfileScreen
 import com.yasinmaden.navigationss.ui.profile.ProfileViewModel
 
 @Composable
-fun HomeNavGraph(navController: NavHostController) {
+fun HomeNavGraph(
+    navController: NavHostController,
+    modifier: Modifier
+) {
 
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = BottomBarScreen.Profile.route
+        startDestination = BottomBarScreen.Profile.route,
+        modifier = modifier
     ) {
         composable(route = BottomBarScreen.Home.route) {
             val viewModel: HomeViewModel = hiltViewModel()
@@ -32,7 +37,8 @@ fun HomeNavGraph(navController: NavHostController) {
                 uiState = uiState,
                 uiEffect = uiEffect,
                 onAction = viewModel::onAction,
-                navController = navController
+                navController = navController,
+                modifier = modifier
             )
         }
         composable(route = BottomBarScreen.Wishlist.route) {

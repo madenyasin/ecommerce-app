@@ -1,8 +1,8 @@
 package com.yasinmaden.navigationss.ui.home
 
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavDestination
@@ -26,13 +27,15 @@ import com.yasinmaden.navigationss.ui.theme.NavigationItemTextColor
 import com.yasinmaden.navigationss.ui.theme.NavigationItemTintColor
 import com.yasinmaden.navigationss.ui.theme.White
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun BaseHomeScreen(navController: NavHostController = rememberNavController()) {
     Scaffold(
         bottomBar = { BottomBar(navController = navController) }
-    ) {
-        HomeNavGraph(navController = navController)
+    ) { paddingValues ->
+        HomeNavGraph(
+            navController = navController,
+            modifier = Modifier.padding(paddingValues) // Padding değerini uygula
+        )
     }
 }
 

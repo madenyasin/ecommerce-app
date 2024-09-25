@@ -51,6 +51,7 @@ fun HomeScreen(
     uiEffect: Flow<HomeContract.UiEffect>,
     onAction: (HomeContract.UiAction) -> Unit,
     navController: NavHostController,
+    modifier: Modifier
 ) {
     val context = LocalContext.current
     LaunchedEffect(Unit) {
@@ -250,7 +251,7 @@ fun PreviewApp() {
         ),
         uiEffect = flowOf(),
         onAction = {},
-        navController = NavHostController(LocalContext.current)
-
+        navController = NavHostController(LocalContext.current),
+        modifier = Modifier
     )
 }
