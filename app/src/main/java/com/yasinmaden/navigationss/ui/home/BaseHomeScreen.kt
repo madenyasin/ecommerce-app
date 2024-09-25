@@ -3,12 +3,11 @@ package com.yasinmaden.navigationss.ui.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.BottomNavigation
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -51,8 +50,8 @@ fun BottomBar(navController: NavHostController) {
 
     val bottomBarDestination = screens.any { it.route == currentDestination?.route }
     if (bottomBarDestination) {
-        BottomNavigation(
-            backgroundColor = White,
+        NavigationBar(
+            contentColor = White,
         ) {
             screens.forEach { screen ->
                 AddItem(
@@ -75,7 +74,7 @@ fun RowScope.AddItem(
         it.route == screen.route
     } == true
 
-    BottomNavigationItem(
+    NavigationBarItem(
         icon = {
             if (isSelected) {
                 Text(text = screen.title, color = NavigationItemTextColor)
@@ -88,7 +87,9 @@ fun RowScope.AddItem(
             }
         },
         selected = isSelected,
-        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
+        colors = NavigationBarItemDefaults.colors(
+            unselectedIconColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled)
+        ),
         onClick = {
             navController.navigate(screen.route) {
                 popUpTo(navController.graph.findStartDestination().id)

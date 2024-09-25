@@ -70,7 +70,6 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.navigation.compose)
-    implementation (libs.androidx.material)
 
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)

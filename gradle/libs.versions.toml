@@ -15,7 +15,6 @@ activity-compose = "1.9.2"
 compose-bom = "2024.09.02"
 hilt = "2.52"
 hiltNavigationCompose = "1.2.0"
-materialVersion = "1.7.2"
 navigationCompose = "2.8.1"
 googleServices = "4.4.2"
 firebase = "33.3.0"
@@ -25,7 +24,6 @@ playServicesAuth = "21.2.0"
 retrofit = "2.11.0"
 
 [libraries]
-androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }

@@ -14,6 +14,8 @@ val GoogleButtonColor = Color(0xFFEA4335)
 val NavigationItemTintColor = Color(0xFF8F959E)
 val NavigationItemTextColor = Color(0xFF9775FA)
 
+val BrandCardContainerColor = Color(0xFFF5F6FA)
+
 val Gray = Color.Gray
 val DarkGray = Color.DarkGray
 val Black = Color.Black
