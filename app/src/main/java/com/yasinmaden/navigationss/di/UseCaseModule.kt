@@ -1,6 +1,8 @@
 package com.yasinmaden.navigationss.di
 
+import com.yasinmaden.navigationss.domain.repository.CategoryRepository
 import com.yasinmaden.navigationss.domain.repository.ProductRepository
+import com.yasinmaden.navigationss.domain.usecase.GetCategoryUseCase
 import com.yasinmaden.navigationss.domain.usecase.GetProductUseCase
 import dagger.Module
 import dagger.Provides
@@ -19,4 +21,13 @@ object UseCaseModule {
     ) : GetProductUseCase {
         return GetProductUseCase(productRepository)
     }
+
+    @Singleton
+    @Provides
+    fun provideGetCategoryUseCase(
+        categoryRepository: CategoryRepository
+    ) : GetCategoryUseCase {
+        return GetCategoryUseCase(categoryRepository)
+    }
+
 }
