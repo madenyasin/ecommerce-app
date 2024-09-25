@@ -1,16 +1,22 @@
 package com.yasinmaden.navigationss.ui.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -23,14 +29,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.yasinmaden.navigationss.R
+import com.yasinmaden.navigationss.data.model.product.ProductDetails
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
+import com.yasinmaden.navigationss.ui.theme.BrandCardContainerColor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -77,6 +88,7 @@ fun HomeContent(
             WelcomeSection()
             SearchBar()
             ChooseCategorySection(uiState.categories)
+            ProductSection(uiState.products)
         }
     }
 }
@@ -109,7 +121,8 @@ fun ChooseCategorySection(categories: List<String>) {
 fun CategoryCard(categoryName: String) {
     Card(
         modifier = Modifier
-            .height(50.dp),
+            .height(50.dp)
+            .clickable {  },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Box(
@@ -124,6 +137,70 @@ fun CategoryCard(categoryName: String) {
             )
         }
     }
+}
+
+@Composable
+fun ProductCard(product: ProductDetails) {
+    Box(
+        modifier = Modifier
+            .size(160.dp, 265.dp)
+            .background(MaterialTheme.colorScheme.background)
+            .clickable {  }
+    ) {
+        Column {
+            Card(
+                modifier = Modifier
+                    .size(160.dp, 203.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+            ) {
+                AsyncImage(
+                    model = product.thumbnail,
+                    contentDescription = product.title,
+                    modifier = Modifier.fillMaxSize(),
+                    alignment = Alignment.Center,
+                    contentScale = ContentScale.Crop
+                )
+            }
+            Text(
+                text = product.title,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(bottom = 8.dp, top = 8.dp)
+            )
+            Text(
+                text = product.price.toString(),
+                style = MaterialTheme.typography.titleSmall
+            )
+        }
+    }
+}
+
+
+@Composable
+fun ProductSection(products: List<ProductDetails>) {
+
+    Column(
+        Modifier
+            .fillMaxSize()
+    ) {
+        Text(
+            text = "New Arrival",
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(bottom = 8.dp, start = 16.dp)
+        )
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(16.dp)
+        ) {
+            items(products) { product ->
+                ProductCard(product = product)
+            }
+        }
+    }
+
+
 }
 
 
