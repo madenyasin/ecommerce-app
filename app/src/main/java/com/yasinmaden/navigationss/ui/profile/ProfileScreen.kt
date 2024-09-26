@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -22,10 +21,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.google.firebase.auth.FirebaseAuth
-import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
+import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
@@ -33,7 +33,6 @@ import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiAction
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiEffect
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiState
 import com.yasinmaden.navigationss.ui.theme.Gray
-import com.yasinmaden.navigationss.utils.GoogleSignInManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -44,6 +43,7 @@ fun ProfileScreen(
     onAction: (UiAction) -> Unit,
     navController: NavHostController,
 ) {
+    val viewModel: ProfileViewModel = hiltViewModel()
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         uiEffect.collect { effect ->
@@ -58,7 +58,9 @@ fun ProfileScreen(
         uiState.isLoading -> LoadingBar()
         uiState.list.isNotEmpty() -> EmptyScreen()
         else -> ProfileContent(
-            navController = navController
+            navController = navController,
+            firebaseAuth = viewModel.firebaseAuth,
+            googleAuthRepository = viewModel.googleAuthRepository
         )
     }
 }
@@ -66,8 +68,8 @@ fun ProfileScreen(
 @Composable
 fun ProfileContent(
     navController: NavHostController,
-    firebaseAuth: FirebaseAuth = provideFirebaseAuth(),
-    googleSignInManager: GoogleSignInManager = GoogleSignInManager(navController.context),
+    firebaseAuth: FirebaseAuth,
+    googleAuthRepository: GoogleAuthRepository
 ) {
     val user = firebaseAuth.currentUser
 
@@ -111,7 +113,7 @@ fun ProfileContent(
                     onClick = {
                         try {
                             firebaseAuth.signOut()
-                            googleSignInManager.signOut()
+                            googleAuthRepository.signOut()
                             navController.navigate(Graph.AUTHENTICATION) {
                                 popUpTo(navController.graph.startDestinationId) {
                                     inclusive = true // Clear back stack

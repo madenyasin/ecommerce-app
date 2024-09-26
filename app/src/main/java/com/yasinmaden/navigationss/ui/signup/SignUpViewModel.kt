@@ -3,7 +3,7 @@ package com.yasinmaden.navigationss.ui.signup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yasinmaden.navigationss.common.Resource
-import com.yasinmaden.navigationss.data.repository.AuthRepository
+import com.yasinmaden.navigationss.domain.repository.FirebaseAuthRepository
 import com.yasinmaden.navigationss.ui.signup.SignUpContract.UiAction
 import com.yasinmaden.navigationss.ui.signup.SignUpContract.UiEffect
 import com.yasinmaden.navigationss.ui.signup.SignUpContract.UiState
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val firebaseAuthRepository: FirebaseAuthRepository
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -38,7 +38,7 @@ class SignUpViewModel @Inject constructor(
         }
     }
     private fun signUp() = viewModelScope.launch {
-        when (val result = authRepository.signUp(uiState.value.email, uiState.value.password)) {
+        when (val result = firebaseAuthRepository.signUp(uiState.value.email, uiState.value.password)) {
             is Resource.Success -> {
                 emitUiEffect(UiEffect.ShowToast(result.data))
                 emitUiEffect(UiEffect.NavigateToLogin)

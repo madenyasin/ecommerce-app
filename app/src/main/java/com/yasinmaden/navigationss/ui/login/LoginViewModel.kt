@@ -3,7 +3,8 @@ package com.yasinmaden.navigationss.ui.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yasinmaden.navigationss.common.Resource
-import com.yasinmaden.navigationss.data.repository.AuthRepository
+import com.yasinmaden.navigationss.domain.repository.FirebaseAuthRepository
+import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiAction
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiEffect
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiState
@@ -20,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    val firebaseAuthRepository: FirebaseAuthRepository,
+    val googleAuthRepository: GoogleAuthRepository
 ) :
     ViewModel() {
 
@@ -46,10 +48,10 @@ class LoginViewModel @Inject constructor(
         isUserLoggedIn()
     }
 
-    fun onGoogleSignInIntent() = authRepository.getSignInIntent()
+    fun onGoogleSignInIntent() = googleAuthRepository.getSignInIntent()
 
     private fun signIn() = viewModelScope.launch {
-        when (val result = authRepository.signIn(uiState.value.email, uiState.value.password)) {
+        when (val result = firebaseAuthRepository.signIn(uiState.value.email, uiState.value.password)) {
             is Resource.Success -> {
                 emitUiEffect(UiEffect.ShowToast(result.data))
                 emitUiEffect(UiEffect.NavigateToHome)
@@ -61,7 +63,7 @@ class LoginViewModel @Inject constructor(
         }
     }
     private fun signInWithGoogle(idToken: String) = viewModelScope.launch {
-        when (val result = authRepository.signInWithGoogle(idToken)) {
+        when (val result = firebaseAuthRepository.signInWithGoogle(idToken)) {
             is Resource.Success -> {
                 emitUiEffect(UiEffect.ShowToast(result.data))
                 emitUiEffect(UiEffect.NavigateToHome)
@@ -76,7 +78,7 @@ class LoginViewModel @Inject constructor(
 
 
     private fun isUserLoggedIn() = viewModelScope.launch {
-        if (authRepository.isUserLoggedIn()) {
+        if (firebaseAuthRepository.isUserLoggedIn()) {
             emitUiEffect(UiEffect.NavigateToHome)
         }
     }
