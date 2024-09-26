@@ -6,13 +6,11 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.yasinmaden.navigationss.common.Resource
-import com.yasinmaden.navigationss.utils.GoogleSignInManager
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class FirebaseAuthRepository @Inject constructor(
-    private val auth: FirebaseAuth,
-    private val googleSignInManager: GoogleSignInManager
+    private val auth: FirebaseAuth
 ) {
     fun isUserLoggedIn(): Boolean = auth.currentUser != null
 
@@ -43,12 +41,4 @@ class FirebaseAuthRepository @Inject constructor(
             Resource.Error(e)
         }
     }
-    fun getSignInIntent(): Intent {
-        return googleSignInManager.getSignInIntent()
-    }
-
-    fun handleSignInResult(data: Intent?): Task<GoogleSignInAccount> {
-        return googleSignInManager.handleSignInResult(data)
-    }
-
 }

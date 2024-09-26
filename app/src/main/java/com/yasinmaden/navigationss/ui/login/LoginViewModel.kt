@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yasinmaden.navigationss.common.Resource
 import com.yasinmaden.navigationss.domain.repository.FirebaseAuthRepository
+import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiAction
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiEffect
 import com.yasinmaden.navigationss.ui.login.LoginContract.UiState
@@ -20,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val firebaseAuthRepository: FirebaseAuthRepository,
+    val firebaseAuthRepository: FirebaseAuthRepository,
+    val googleAuthRepository: GoogleAuthRepository
 ) :
     ViewModel() {
 
@@ -46,7 +48,7 @@ class LoginViewModel @Inject constructor(
         isUserLoggedIn()
     }
 
-    fun onGoogleSignInIntent() = firebaseAuthRepository.getSignInIntent()
+    fun onGoogleSignInIntent() = googleAuthRepository.getSignInIntent()
 
     private fun signIn() = viewModelScope.launch {
         when (val result = firebaseAuthRepository.signIn(uiState.value.email, uiState.value.password)) {

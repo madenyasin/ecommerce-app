@@ -33,12 +33,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.yasinmaden.navigationss.R
 import com.yasinmaden.navigationss.domain.repository.FirebaseAuthRepository
 import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
+import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.navigation.AuthScreen
 import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
@@ -51,7 +54,6 @@ import com.yasinmaden.navigationss.ui.theme.GoogleButtonColor
 import com.yasinmaden.navigationss.ui.theme.Gray
 import com.yasinmaden.navigationss.ui.theme.Red
 import com.yasinmaden.navigationss.ui.theme.White
-import com.yasinmaden.navigationss.utils.GoogleSignInManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -62,9 +64,9 @@ fun LoginScreen(
     uiEffect: Flow<UiEffect>,
     onAction: (UiAction) -> Unit,
 ) {
+    val viewModel: LoginViewModel = hiltViewModel()
     val context = LocalContext.current
 
-    // Observe UI effects (like navigation)
     LaunchedEffect(Unit) {
         uiEffect.collect { effect ->
             when (effect) {
@@ -99,10 +101,8 @@ fun LoginScreen(
             onForgotClick = { onAction(UiAction.OnForgotClick) },
             onGoogleSignIn = { idToken -> onAction(UiAction.OnGoogleSignIn(idToken)) },
             viewModel = LoginViewModel(
-                FirebaseAuthRepository(
-                    provideFirebaseAuth(),
-                    GoogleSignInManager(context)
-                )
+                firebaseAuthRepository = viewModel.firebaseAuthRepository,
+                googleAuthRepository = viewModel.googleAuthRepository
             )
         )
     }

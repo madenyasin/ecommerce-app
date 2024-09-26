@@ -2,6 +2,7 @@ package com.yasinmaden.navigationss.ui.profile
 
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiAction
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiEffect
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiState
@@ -14,15 +15,18 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+
 @HiltViewModel
-class ProfileViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth): ViewModel() {
+class ProfileViewModel @Inject constructor(
+    val googleAuthRepository: GoogleAuthRepository,
+    val firebaseAuth: FirebaseAuth
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     private val _uiEffect by lazy { Channel<UiEffect>() }
     val uiEffect: Flow<UiEffect> by lazy { _uiEffect.receiveAsFlow() }
-
 
 
     fun onAction(uiAction: UiAction) {
