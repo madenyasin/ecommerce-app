@@ -1,7 +1,7 @@
 package com.yasinmaden.navigationss.di
 
 import com.yasinmaden.navigationss.common.Constants
-import com.yasinmaden.navigationss.data.network.DummyAPIService
+import com.yasinmaden.navigationss.network.DummyAPIService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

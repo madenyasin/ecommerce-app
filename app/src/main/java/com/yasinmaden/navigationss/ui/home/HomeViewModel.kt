@@ -52,6 +52,8 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = true) }
         when (val request = productRepository.getProducts()) {
             is Resource.Success -> {
+                Log.d("loadProducts", "Ürün sayısı: ${request.data.products.size}")
+
                 Log.d("loadProducts", "Veri başarıyla çekildi. Ürünler listeleniyor...")
 
                 // Her bir ürünü alt alta logluyoruz

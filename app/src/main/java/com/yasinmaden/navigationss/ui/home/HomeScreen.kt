@@ -175,7 +175,6 @@ fun ProductCard(product: ProductDetails) {
 
 @Composable
 fun ProductSection(products: List<ProductDetails>) {
-
     Column(
         Modifier
             .fillMaxSize()
@@ -197,8 +196,6 @@ fun ProductSection(products: List<ProductDetails>) {
             }
         }
     }
-
-
 }
 
 
