@@ -1,8 +1,5 @@
 package com.yasinmaden.navigationss.domain.repository
 
-import android.content.Intent
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.yasinmaden.navigationss.common.Resource

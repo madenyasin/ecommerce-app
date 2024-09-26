@@ -22,14 +22,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
-import com.yasinmaden.navigationss.di.GoogleModule.provideGoogleSignInClient
 import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.components.EmptyScreen

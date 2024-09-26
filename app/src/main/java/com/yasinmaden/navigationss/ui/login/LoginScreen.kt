@@ -37,11 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.yasinmaden.navigationss.R
-import com.yasinmaden.navigationss.domain.repository.FirebaseAuthRepository
-import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
-import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.navigation.AuthScreen
 import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
@@ -130,7 +126,7 @@ fun LoginContent(
             val account: GoogleSignInAccount? =
                 GoogleSignIn.getSignedInAccountFromIntent(result.data).result
             account?.idToken?.let { idToken ->
-                onGoogleSignIn(idToken) // Pass the ID token to ViewModel
+                onGoogleSignIn(idToken)
             }
         } catch (e: Exception) {
             UiEffect.ShowToast(e.message.toString())
@@ -246,9 +242,9 @@ fun LoginContent(
             onClick = onClick,
             shape = RoundedCornerShape(0.dp),
             modifier = Modifier
-                .align(Alignment.BottomCenter) // Align the button to the bottom center
-                .fillMaxWidth() // Make the button full width
-                .padding(top = 16.dp) // Optional padding for spacing
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .padding(top = 16.dp)
                 .size(height = 75.dp, width = 150.dp)
         ) {
             Text(text = "Login", fontSize = 17.sp, style = MaterialTheme.typography.titleLarge)
