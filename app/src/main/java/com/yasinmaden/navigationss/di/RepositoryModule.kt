@@ -3,9 +3,7 @@ package com.yasinmaden.navigationss.di
 import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
-import com.yasinmaden.navigationss.data.network.ApiService
-import com.yasinmaden.navigationss.data.repository.CategoryRepositoryImpl
-import com.yasinmaden.navigationss.data.repository.ProductRepositoryImpl
+import com.yasinmaden.navigationss.data.network.DummyAPIService
 import com.yasinmaden.navigationss.domain.repository.CategoryRepository
 import com.yasinmaden.navigationss.domain.repository.FirebaseAuthRepository
 import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
@@ -49,16 +47,16 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideProductRepository(
-        apiService: ApiService
+        dummyAPIService: DummyAPIService
     ): ProductRepository {
-        return ProductRepositoryImpl(apiService)
+        return ProductRepository(dummyAPIService)
     }
 
     @Singleton
     @Provides
     fun provideCategoryRepository(
-        apiService: ApiService
+        dummyAPIService: DummyAPIService
     ): CategoryRepository {
-        return CategoryRepositoryImpl(apiService)
+        return CategoryRepository(dummyAPIService)
     }
 }

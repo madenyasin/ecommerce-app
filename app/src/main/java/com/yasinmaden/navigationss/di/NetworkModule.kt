@@ -1,7 +1,7 @@
 package com.yasinmaden.navigationss.di
 
 import com.yasinmaden.navigationss.common.Constants
-import com.yasinmaden.navigationss.data.network.ApiService
+import com.yasinmaden.navigationss.data.network.DummyAPIService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,8 +56,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
+    fun provideApiService(retrofit: Retrofit): DummyAPIService {
+        return retrofit.create(DummyAPIService::class.java)
     }
 
 }

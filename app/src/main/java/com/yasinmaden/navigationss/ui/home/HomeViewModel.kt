@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yasinmaden.navigationss.common.Resource
 import com.yasinmaden.navigationss.data.model.product.ProductResponse
-import com.yasinmaden.navigationss.domain.usecase.GetCategoryUseCase
-import com.yasinmaden.navigationss.domain.usecase.GetProductUseCase
+import com.yasinmaden.navigationss.domain.repository.CategoryRepository
+import com.yasinmaden.navigationss.domain.repository.ProductRepository
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -21,8 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getProductUseCase: GetProductUseCase,
-    private val getCategoryUseCase: GetCategoryUseCase
+    private val productRepository: ProductRepository,
+    private val categoryRepository: CategoryRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeContract.UiState())
     val uiState: StateFlow<HomeContract.UiState> = _uiState.asStateFlow()
@@ -40,13 +40,9 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 loadProducts()
-            } catch (e: Exception) {
-                Log.e("loadProducts", "Ürünler yüklenirken hata oluştu: ${e.message}")
-            }
-            try {
                 loadCategories()
             } catch (e: Exception) {
-                Log.e("loadCategories", "Kategoriler yüklenirken hata oluştu: ${e.message}")
+                Log.e("DataLoad", "Veriler yüklenirken hata oluştu: ${e.message}")
             }
         }
     }
@@ -54,7 +50,7 @@ class HomeViewModel @Inject constructor(
     private suspend fun loadProducts(): Resource<ProductResponse> {
         Log.d("loadProducts", "Veri çekme işlemi başladı") // Başlangıç logu
         _uiState.update { it.copy(isLoading = true) }
-        when (val request = getProductUseCase.execute()) {
+        when (val request = productRepository.getProducts()) {
             is Resource.Success -> {
                 Log.d("loadProducts", "Veri başarıyla çekildi. Ürünler listeleniyor...")
 
@@ -80,7 +76,7 @@ class HomeViewModel @Inject constructor(
     private suspend fun loadCategories(): Resource<List<String>> {
         Log.d("loadCategories", "Veri çekme işlemi başladı")
         _uiState.update { it.copy(isLoading = true) }
-        when (val request = getCategoryUseCase.execute()) {
+        when (val request = categoryRepository.getCategories()) {
             is Resource.Success -> {
                 Log.d("loadCategories", "Veri başarıyla çekildi. Kategoriler listeleniyor...")
 
