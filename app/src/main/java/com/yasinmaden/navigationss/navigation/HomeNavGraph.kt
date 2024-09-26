@@ -94,4 +94,6 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
 sealed class DetailsScreen(val route: String) {
     data object Information : DetailsScreen(route = "INFORMATION")
     data object Overview : DetailsScreen(route = "OVERVIEW")
+    data object Review : DetailsScreen(route = "REVIEW")
+
 }

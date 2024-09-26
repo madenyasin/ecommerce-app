@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.yasinmaden.navigationss.R
 import com.yasinmaden.navigationss.data.model.product.ProductDetails
+import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
 import kotlinx.coroutines.flow.Flow
@@ -55,6 +56,10 @@ fun HomeScreen(
             when (effect) {
                 is HomeContract.UiEffect.NavigateTo -> {
                     navController.navigate(effect.route)
+                }
+
+                is HomeContract.UiEffect.NavigateToProductDetails -> {
+                    navController.navigate(Graph.DETAILS)
                 }
             }
         }
@@ -92,7 +97,8 @@ fun HomeContent(
             )
             ProductSection(
                 products = uiState.products,
-                isLoading = uiState.isLoadingProducts
+                isLoading = uiState.isLoadingProducts,
+                onAction = onAction
             )
         }
     }
@@ -154,12 +160,15 @@ fun CategoryCard(
 }
 
 @Composable
-fun ProductCard(product: ProductDetails) {
+fun ProductCard(
+    product: ProductDetails,
+    onAction: (HomeContract.UiAction) -> Unit
+) {
     Box(
         modifier = Modifier
             .size(160.dp, 265.dp)
             .background(MaterialTheme.colorScheme.background)
-            .clickable { }
+            .clickable { onAction(HomeContract.UiAction.OnProductSelected(product)) }
     ) {
         Column {
             Card(
@@ -192,7 +201,8 @@ fun ProductCard(product: ProductDetails) {
 @Composable
 fun ProductSection(
     products: List<ProductDetails>,
-    isLoading: Boolean
+    isLoading: Boolean,
+    onAction: (HomeContract.UiAction) -> Unit
 ) {
     Column(
         Modifier
@@ -214,7 +224,10 @@ fun ProductSection(
                 modifier = Modifier.padding(16.dp)
             ) {
                 items(products) { product ->
-                    ProductCard(product = product)
+                    ProductCard(
+                        product = product,
+                        onAction = onAction
+                    )
                 }
             }
         }
