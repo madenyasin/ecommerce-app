@@ -1,4 +1,4 @@
-package com.yasinmaden.navigationss.data.repository
+package com.yasinmaden.navigationss.domain.repository
 
 import android.content.Intent
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount

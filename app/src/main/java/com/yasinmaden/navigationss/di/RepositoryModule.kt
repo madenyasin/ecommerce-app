@@ -2,7 +2,7 @@ package com.yasinmaden.navigationss.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.yasinmaden.navigationss.data.network.ApiService
-import com.yasinmaden.navigationss.data.repository.FirebaseAuthRepository
+import com.yasinmaden.navigationss.domain.repository.FirebaseAuthRepository
 import com.yasinmaden.navigationss.data.repository.CategoryRepositoryImpl
 import com.yasinmaden.navigationss.data.repository.ProductRepositoryImpl
 import com.yasinmaden.navigationss.domain.repository.CategoryRepository
