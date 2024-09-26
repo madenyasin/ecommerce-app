@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.google.firebase.auth.FirebaseAuth
-import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
+import com.yasinmaden.navigationss.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar

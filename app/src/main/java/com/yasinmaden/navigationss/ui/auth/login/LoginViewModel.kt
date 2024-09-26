@@ -3,8 +3,8 @@ package com.yasinmaden.navigationss.ui.auth.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yasinmaden.navigationss.common.Resource
-import com.yasinmaden.navigationss.domain.repository.FirebaseAuthRepository
-import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
+import com.yasinmaden.navigationss.repository.FirebaseAuthRepository
+import com.yasinmaden.navigationss.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.ui.auth.login.LoginContract.UiAction
 import com.yasinmaden.navigationss.ui.auth.login.LoginContract.UiEffect
 import com.yasinmaden.navigationss.ui.auth.login.LoginContract.UiState

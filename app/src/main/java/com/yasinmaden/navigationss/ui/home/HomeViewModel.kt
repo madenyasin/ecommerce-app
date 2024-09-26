@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.yasinmaden.navigationss.common.Resource
 import com.yasinmaden.navigationss.data.model.product.ProductDetails
 import com.yasinmaden.navigationss.data.model.product.ProductResponse
-import com.yasinmaden.navigationss.domain.repository.CategoryRepository
-import com.yasinmaden.navigationss.domain.repository.ProductRepository
+import com.yasinmaden.navigationss.repository.CategoryRepository
+import com.yasinmaden.navigationss.repository.ProductRepository
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel

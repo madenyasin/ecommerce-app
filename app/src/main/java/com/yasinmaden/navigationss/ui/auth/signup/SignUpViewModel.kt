@@ -3,7 +3,7 @@ package com.yasinmaden.navigationss.ui.auth.signup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yasinmaden.navigationss.common.Resource
-import com.yasinmaden.navigationss.domain.repository.FirebaseAuthRepository
+import com.yasinmaden.navigationss.repository.FirebaseAuthRepository
 import com.yasinmaden.navigationss.ui.auth.signup.SignUpContract.UiAction
 import com.yasinmaden.navigationss.ui.auth.signup.SignUpContract.UiEffect
 import com.yasinmaden.navigationss.ui.auth.signup.SignUpContract.UiState
