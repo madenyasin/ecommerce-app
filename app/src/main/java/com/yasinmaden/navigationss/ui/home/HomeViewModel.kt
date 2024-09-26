@@ -33,6 +33,9 @@ class HomeViewModel @Inject constructor(
     fun onAction(uiAction: HomeContract.UiAction) {
         when (uiAction) {
             is HomeContract.UiAction.OnTabSelected -> updateSelectedTab(uiAction.screen)
+            is HomeContract.UiAction.OnCategorySelected -> viewModelScope.launch {
+                loadProductsByCategory(uiAction.category)
+            }
         }
     }
 
@@ -43,6 +46,28 @@ class HomeViewModel @Inject constructor(
                 loadCategories()
             } catch (e: Exception) {
                 Log.e("DataLoad", "Veriler yüklenirken hata oluştu: ${e.message}")
+            }
+        }
+    }
+
+    private suspend fun loadProductsByCategory(categoryName: String): Resource<ProductResponse> {
+        Log.d("loadProductsByCategory", "Veri çekme işlemi başladı")
+        _uiState.update { it.copy(isLoadingProducts = true) }
+        when (val request = productRepository.getProductsByCategory(categoryName)) {
+            is Resource.Success -> {
+                Log.d("loadProductsByCategory", "Ürün sayısı: ${request.data.products.size}")
+                Log.d("loadProductsByCategory", "Veri başarıyla çekildi. Ürünler listeleniyor...")
+                request.data.products.forEach { product ->
+                    Log.d("loadProductsByCategory", "Ürün: $product")
+                }
+                _uiState.update { it.copy(products = request.data.products, isLoadingProducts = false) }
+                return Resource.Success(data = request.data)
+            }
+
+            is Resource.Error -> {
+                Log.e("loadProductsByCategory", "Veri çekme hatası: ${request.exception.message}")
+                _uiState.update { it.copy(isLoadingProducts = false) }
+                return Resource.Error(exception = request.exception)
             }
         }
     }
@@ -63,7 +88,6 @@ class HomeViewModel @Inject constructor(
                 _uiState.update { it.copy(products = request.data.products, isLoading = false) }
                 return Resource.Success(data = request.data)
             }
-
             is Resource.Error -> {
                 Log.e(
                     "loadProducts",
@@ -82,7 +106,7 @@ class HomeViewModel @Inject constructor(
             is Resource.Success -> {
                 Log.d("loadCategories", "Veri başarıyla çekildi. Kategoriler listeleniyor...")
 
-                request.data.forEach{ category->
+                request.data.forEach { category ->
                     Log.d("loadCategories", "Kategori: $category")
                 }
 

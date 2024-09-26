@@ -50,7 +50,6 @@ fun HomeScreen(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    val context = LocalContext.current
     LaunchedEffect(Unit) {
         uiEffect.collect { effect ->
             when (effect) {
@@ -65,7 +64,8 @@ fun HomeScreen(
         uiState.list.isNotEmpty() -> EmptyScreen()
         else -> HomeContent(
             navController = navController,
-            uiState = uiState
+            uiState = uiState,
+            onAction = onAction
         )
     }
 }
@@ -73,7 +73,8 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     navController: NavHostController,
-    uiState: HomeContract.UiState
+    uiState: HomeContract.UiState,
+    onAction: (HomeContract.UiAction) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -85,14 +86,23 @@ fun HomeContent(
         Column {
             WelcomeSection()
             SearchBar()
-            ChooseCategorySection(uiState.categories)
-            ProductSection(uiState.products)
+            ChooseCategorySection(
+                categories = uiState.categories,
+                onAction = onAction
+            )
+            ProductSection(
+                products = uiState.products,
+                isLoading = uiState.isLoadingProducts
+            )
         }
     }
 }
 
 @Composable
-fun ChooseCategorySection(categories: List<String>) {
+fun ChooseCategorySection(
+    categories: List<String>,
+    onAction: (HomeContract.UiAction) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -108,7 +118,10 @@ fun ChooseCategorySection(categories: List<String>) {
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(categories) { brand ->
-                CategoryCard(categoryName = brand)
+                CategoryCard(
+                    categoryName = brand,
+                    onAction = onAction
+                )
             }
         }
     }
@@ -116,11 +129,14 @@ fun ChooseCategorySection(categories: List<String>) {
 
 
 @Composable
-fun CategoryCard(categoryName: String) {
+fun CategoryCard(
+    categoryName: String,
+    onAction: (HomeContract.UiAction) -> Unit
+) {
     Card(
         modifier = Modifier
             .height(50.dp)
-            .clickable {  },
+            .clickable { onAction(HomeContract.UiAction.OnCategorySelected(categoryName)) },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Box(
@@ -143,7 +159,7 @@ fun ProductCard(product: ProductDetails) {
         modifier = Modifier
             .size(160.dp, 265.dp)
             .background(MaterialTheme.colorScheme.background)
-            .clickable {  }
+            .clickable { }
     ) {
         Column {
             Card(
@@ -174,7 +190,10 @@ fun ProductCard(product: ProductDetails) {
 
 
 @Composable
-fun ProductSection(products: List<ProductDetails>) {
+fun ProductSection(
+    products: List<ProductDetails>,
+    isLoading: Boolean
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -185,16 +204,21 @@ fun ProductSection(products: List<ProductDetails>) {
             modifier = Modifier.padding(bottom = 8.dp, start = 16.dp)
         )
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(16.dp)
-        ) {
-            items(products) { product ->
-                ProductCard(product = product)
+        if (isLoading) {
+            LoadingBar()
+        } else {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(16.dp)
+            ) {
+                items(products) { product ->
+                    ProductCard(product = product)
+                }
             }
         }
+
     }
 }
 

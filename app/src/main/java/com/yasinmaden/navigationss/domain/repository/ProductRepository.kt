@@ -16,4 +16,13 @@ class ProductRepository @Inject constructor(
         }
         return Resource.Success(data = response)
     }
+
+    suspend fun getProductsByCategory(categoryName: String): Resource<ProductResponse>{
+        val response = try {
+            dummyAPIService.getProductsByCategory(categoryName)
+        }catch (e: Exception){
+            return Resource.Error(exception = e)
+        }
+        return Resource.Success(data = response)
+    }
 }
