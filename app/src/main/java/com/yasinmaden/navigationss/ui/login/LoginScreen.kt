@@ -37,7 +37,7 @@ import androidx.navigation.NavHostController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.yasinmaden.navigationss.R
-import com.yasinmaden.navigationss.data.repository.AuthRepository
+import com.yasinmaden.navigationss.data.repository.FirebaseAuthRepository
 import com.yasinmaden.navigationss.di.FirebaseModule.provideFirebaseAuth
 import com.yasinmaden.navigationss.navigation.AuthScreen
 import com.yasinmaden.navigationss.navigation.Graph
@@ -99,7 +99,7 @@ fun LoginScreen(
             onForgotClick = { onAction(UiAction.OnForgotClick) },
             onGoogleSignIn = { idToken -> onAction(UiAction.OnGoogleSignIn(idToken)) },
             viewModel = LoginViewModel(
-                AuthRepository(
+                FirebaseAuthRepository(
                     provideFirebaseAuth(),
                     GoogleSignInManager(context)
                 )

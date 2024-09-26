@@ -1,19 +1,16 @@
 package com.yasinmaden.navigationss.data.repository
 
 import android.content.Intent
-import android.provider.Settings.Global.getString
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.yasinmaden.navigationss.R
 import com.yasinmaden.navigationss.common.Resource
 import com.yasinmaden.navigationss.utils.GoogleSignInManager
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class AuthRepository @Inject constructor(
+class FirebaseAuthRepository @Inject constructor(
     private val auth: FirebaseAuth,
     private val googleSignInManager: GoogleSignInManager
 ) {
@@ -41,7 +38,6 @@ class AuthRepository @Inject constructor(
         return try {
             val credential = GoogleAuthProvider.getCredential(idToken, null)
             val result = auth.signInWithCredential(credential).await()
-//            Resource.Success(result.user?.uid.orEmpty())
             Resource.Success("Google sign-in successful!")
         } catch (e: Exception) {
             Resource.Error(e)
