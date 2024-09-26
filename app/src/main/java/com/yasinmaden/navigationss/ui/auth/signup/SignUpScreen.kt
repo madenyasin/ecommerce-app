@@ -1,4 +1,4 @@
-package com.yasinmaden.navigationss.ui.signup
+package com.yasinmaden.navigationss.ui.auth.signup
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -26,9 +26,9 @@ import androidx.navigation.NavHostController
 import com.yasinmaden.navigationss.navigation.AuthScreen
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
-import com.yasinmaden.navigationss.ui.signup.SignUpContract.UiAction
-import com.yasinmaden.navigationss.ui.signup.SignUpContract.UiEffect
-import com.yasinmaden.navigationss.ui.signup.SignUpContract.UiState
+import com.yasinmaden.navigationss.ui.auth.signup.SignUpContract.UiAction
+import com.yasinmaden.navigationss.ui.auth.signup.SignUpContract.UiEffect
+import com.yasinmaden.navigationss.ui.auth.signup.SignUpContract.UiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 

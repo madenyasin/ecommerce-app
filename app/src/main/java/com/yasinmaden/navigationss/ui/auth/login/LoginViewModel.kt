@@ -1,13 +1,13 @@
-package com.yasinmaden.navigationss.ui.login
+package com.yasinmaden.navigationss.ui.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yasinmaden.navigationss.common.Resource
 import com.yasinmaden.navigationss.domain.repository.FirebaseAuthRepository
 import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
-import com.yasinmaden.navigationss.ui.login.LoginContract.UiAction
-import com.yasinmaden.navigationss.ui.login.LoginContract.UiEffect
-import com.yasinmaden.navigationss.ui.login.LoginContract.UiState
+import com.yasinmaden.navigationss.ui.auth.login.LoginContract.UiAction
+import com.yasinmaden.navigationss.ui.auth.login.LoginContract.UiEffect
+import com.yasinmaden.navigationss.ui.auth.login.LoginContract.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow

@@ -1,10 +1,10 @@
-package com.yasinmaden.navigationss.ui.forgot
+package com.yasinmaden.navigationss.ui.auth.forgot
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiAction
-import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiEffect
-import com.yasinmaden.navigationss.ui.forgot.ForgotContract.UiState
+import com.yasinmaden.navigationss.ui.auth.forgot.ForgotContract.UiAction
+import com.yasinmaden.navigationss.ui.auth.forgot.ForgotContract.UiEffect
+import com.yasinmaden.navigationss.ui.auth.forgot.ForgotContract.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow

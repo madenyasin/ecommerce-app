@@ -1,19 +1,19 @@
-package com.yasinmaden.navigationss.ui.forgot
+package com.yasinmaden.navigationss.ui.auth.signup
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 
-class ForgotScreenPreviewProvider : PreviewParameterProvider<ForgotContract.UiState> {
-    override val values: Sequence<ForgotContract.UiState>
+class SignUpScreenPreviewProvider : PreviewParameterProvider<SignUpContract.UiState> {
+    override val values: Sequence<SignUpContract.UiState>
         get() = sequenceOf(
-            ForgotContract.UiState(
+            SignUpContract.UiState(
                 isLoading = true,
                 list = emptyList(),
             ),
-            ForgotContract.UiState(
+            SignUpContract.UiState(
                 isLoading = false,
                 list = emptyList(),
             ),
-            ForgotContract.UiState(
+            SignUpContract.UiState(
                 isLoading = false,
                 list = listOf("Item 1", "Item 2", "Item 3")
             ),

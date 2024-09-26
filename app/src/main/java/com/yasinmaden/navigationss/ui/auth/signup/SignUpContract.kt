@@ -1,23 +1,21 @@
-package com.yasinmaden.navigationss.ui.forgot
+package com.yasinmaden.navigationss.ui.auth.signup
 
-object ForgotContract {
+object SignUpContract {
     data class UiState(
         val isLoading: Boolean = false,
         val list: List<String> = emptyList(),
         val email: String = "",
+        val password: String = "",
     )
 
     sealed class UiAction{
-        data object OnConfirmClick : UiAction()
-        data object OnBackClick : UiAction()
-        data class OnEmailChange(val email: String) : UiAction()   // New action for email input
+        data class OnEmailChange(val email: String): UiAction()
+        data class OnPasswordChange(val password: String): UiAction()
+        object OnSignUpClick: UiAction()
     }
 
     sealed class UiEffect{
-        data object NavigateBack : UiEffect()
         data object NavigateToLogin : UiEffect()
         data class ShowToast(val message: String) : UiEffect()
-
-
     }
 }

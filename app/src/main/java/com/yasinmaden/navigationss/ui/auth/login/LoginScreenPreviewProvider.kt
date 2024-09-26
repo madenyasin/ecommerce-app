@@ -1,19 +1,19 @@
-package com.yasinmaden.navigationss.ui.signup
+package com.yasinmaden.navigationss.ui.auth.login
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 
-class SignUpScreenPreviewProvider : PreviewParameterProvider<SignUpContract.UiState> {
-    override val values: Sequence<SignUpContract.UiState>
+class LoginScreenPreviewProvider : PreviewParameterProvider<LoginContract.UiState> {
+    override val values: Sequence<LoginContract.UiState>
         get() = sequenceOf(
-            SignUpContract.UiState(
+            LoginContract.UiState(
                 isLoading = true,
                 list = emptyList(),
             ),
-            SignUpContract.UiState(
+            LoginContract.UiState(
                 isLoading = false,
                 list = emptyList(),
             ),
-            SignUpContract.UiState(
+            LoginContract.UiState(
                 isLoading = false,
                 list = listOf("Item 1", "Item 2", "Item 3")
             ),

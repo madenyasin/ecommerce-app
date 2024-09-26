@@ -1,4 +1,4 @@
-package com.yasinmaden.navigationss.ui.login
+package com.yasinmaden.navigationss.ui.auth.login
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -42,9 +42,9 @@ import com.yasinmaden.navigationss.navigation.AuthScreen
 import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
-import com.yasinmaden.navigationss.ui.login.LoginContract.UiAction
-import com.yasinmaden.navigationss.ui.login.LoginContract.UiEffect
-import com.yasinmaden.navigationss.ui.login.LoginContract.UiState
+import com.yasinmaden.navigationss.ui.auth.login.LoginContract.UiAction
+import com.yasinmaden.navigationss.ui.auth.login.LoginContract.UiEffect
+import com.yasinmaden.navigationss.ui.auth.login.LoginContract.UiState
 import com.yasinmaden.navigationss.ui.theme.DarkGray
 import com.yasinmaden.navigationss.ui.theme.GoogleButtonColor
 import com.yasinmaden.navigationss.ui.theme.Gray
