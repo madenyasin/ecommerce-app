@@ -81,7 +81,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = true) }
         when (val request = productRepository.getProductById(id)) {
             is Resource.Success -> {
-                _uiState.update { it.copy(productDetail = request.data, isLoading = false) }
+                _uiState.update { it.copy(product = request.data, isLoading = false) }
                 return Resource.Success(data = request.data)
             }
 

@@ -28,7 +28,7 @@ fun HomeNavGraph(
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = BottomBarScreen.Profile.route,
+        startDestination = BottomBarScreen.Home.route,
         modifier = modifier
     ) {
         composable(route = BottomBarScreen.Home.route) {
@@ -75,9 +75,10 @@ fun HomeNavGraph(
 fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
     navigation(
         route = Graph.DETAILS,
-        startDestination = DetailsScreen.Information.route
+        startDestination = "${DetailsScreen.Information.route}/{itemId}"
     ) {
-        composable(route = DetailsScreen.Information.route) {
+        composable(route = "${DetailsScreen.Information.route}/{itemId}") { backStackEntry ->
+            val itemId = backStackEntry.arguments?.getString("itemId") ?: return@composable
             val viewModel: DetailViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val uiEffect = viewModel.uiEffect
@@ -86,7 +87,8 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
                 uiEffect = uiEffect,
                 onAction = viewModel::onAction,
                 navController = navController,
-                modifier = Modifier
+                modifier = Modifier,
+                productId = itemId.toInt()
             )
         }
         composable(route = DetailsScreen.Overview.route) {

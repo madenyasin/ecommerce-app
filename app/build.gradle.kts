@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.plugin)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 android {
@@ -84,4 +85,5 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
     implementation(libs.gson)
+    implementation(libs.kotlinx.serialization.json)
 }
