@@ -62,7 +62,7 @@ fun HomeScreen(
                 }
 
                 is HomeContract.UiEffect.NavigateToProductDetails -> {
-                    val itemId = "123"  // Replace with actual item ID
+                    val itemId = effect.product.id
                     navController.navigate("${DetailsScreen.Information.route}/$itemId")
                 }
             }
