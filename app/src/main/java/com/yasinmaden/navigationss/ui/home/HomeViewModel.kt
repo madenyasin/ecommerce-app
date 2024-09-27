@@ -79,17 +79,19 @@ class HomeViewModel @Inject constructor(
 
     private suspend fun loadProductDetails(id: Int): Resource<ProductDetails> {
         _uiState.update { it.copy(isLoading = true) }
-        when(val request = productRepository.getProductById(id)){
+        when (val request = productRepository.getProductById(id)) {
             is Resource.Success -> {
                 _uiState.update { it.copy(productDetail = request.data, isLoading = false) }
                 return Resource.Success(data = request.data)
             }
+
             is Resource.Error -> {
                 _uiState.update { it.copy(isLoading = false) }
                 return Resource.Error(exception = request.exception)
             }
         }
     }
+
     private suspend fun loadProducts(): Resource<ProductResponse> {
         _uiState.update { it.copy(isLoading = true) }
         when (val request = productRepository.getProducts()) {

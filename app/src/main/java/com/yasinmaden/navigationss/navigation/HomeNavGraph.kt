@@ -12,6 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import com.yasinmaden.navigationss.ui.components.ScreenContent
+import com.yasinmaden.navigationss.ui.detail.DetailScreen
+import com.yasinmaden.navigationss.ui.detail.DetailViewModel
 import com.yasinmaden.navigationss.ui.home.HomeScreen
 import com.yasinmaden.navigationss.ui.home.HomeViewModel
 import com.yasinmaden.navigationss.ui.profile.ProfileScreen
@@ -76,9 +78,16 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
         startDestination = DetailsScreen.Information.route
     ) {
         composable(route = DetailsScreen.Information.route) {
-            ScreenContent(name = DetailsScreen.Information.route) {
-                navController.navigate(DetailsScreen.Overview.route)
-            }
+            val viewModel: DetailViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val uiEffect = viewModel.uiEffect
+            DetailScreen(
+                uiState = uiState,
+                uiEffect = uiEffect,
+                onAction = viewModel::onAction,
+                navController = navController,
+                modifier = Modifier
+            )
         }
         composable(route = DetailsScreen.Overview.route) {
             ScreenContent(name = DetailsScreen.Overview.route) {

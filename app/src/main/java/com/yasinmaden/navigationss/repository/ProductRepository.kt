@@ -11,7 +11,6 @@ class ProductRepository @Inject constructor(
     private val dummyAPIService: DummyAPIService
 ){
 
-
     suspend fun getProducts(): Resource<ProductResponse> {
         val response = try {
             dummyAPIService.getProducts()

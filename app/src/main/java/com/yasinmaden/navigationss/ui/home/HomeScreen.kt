@@ -51,6 +51,8 @@ fun HomeScreen(
     navController: NavHostController,
     modifier: Modifier
 ) {
+
+
     LaunchedEffect(Unit) {
         uiEffect.collect { effect ->
             when (effect) {
