@@ -88,7 +88,7 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
                 onAction = viewModel::onAction,
                 navController = navController,
                 modifier = Modifier,
-                itemId = itemId
+                productId = itemId.toInt()
             )
         }
         composable(route = DetailsScreen.Overview.route) {

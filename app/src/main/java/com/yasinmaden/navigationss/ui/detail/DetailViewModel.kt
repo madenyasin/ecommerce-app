@@ -28,13 +28,10 @@ class DetailViewModel @Inject constructor(
     val uiEffect: Flow<DetailContract.UiEffect> by lazy { _uiEffect.receiveAsFlow() }
 
 
-    init {
+
+    fun loadProductById(id: Int) {
         viewModelScope.launch {
-            try {
-                loadProductDetails(1)
-            } catch (e: Exception) {
-                Log.e("loadProductDetails", "Veriler yüklenirken hata oluştu: ${e.message}")
-            }
+            loadProductDetails(id)
         }
     }
 
@@ -43,16 +40,11 @@ class DetailViewModel @Inject constructor(
         when (val request = productRepository.getProductById(id)) {
             is Resource.Success -> {
                 _uiState.update { it.copy(product = request.data, isLoading = false) }
-                Log.e("loadProductDetails", "Veriler yüklendi: ${request.data}")
                 return Resource.Success(data = request.data)
             }
 
             is Resource.Error -> {
                 _uiState.update { it.copy(isLoading = false) }
-                Log.e(
-                    "loadProductDetails",
-                    "Veriler yüklenirken hata oluştu: ${request.exception.message}"
-                )
                 return Resource.Error(exception = request.exception)
             }
         }
