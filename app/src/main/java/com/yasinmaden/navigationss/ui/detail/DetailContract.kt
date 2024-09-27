@@ -6,7 +6,7 @@ object DetailContract {
     data class UiState(
         val isLoading: Boolean = false,
         val list: List<String> = emptyList(),
-        val productDetail: ProductDetails = ProductDetails()
+        val product: ProductDetails = ProductDetails()
     )
     sealed class UiAction {
     }

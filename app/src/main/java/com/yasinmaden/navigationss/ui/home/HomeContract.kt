@@ -10,7 +10,7 @@ object HomeContract {
         val list: List<String> = emptyList(),
         val currentTab: BottomBarScreen = BottomBarScreen.Home,
         val products: List<ProductDetails> = emptyList(),
-        val productDetail: ProductDetails? = null,
+        val product: ProductDetails = ProductDetails(),
         val categories: List<String> = emptyList()
     )
 
