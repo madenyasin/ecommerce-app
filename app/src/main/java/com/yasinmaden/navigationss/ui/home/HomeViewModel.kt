@@ -4,9 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yasinmaden.navigationss.common.Resource
+import com.yasinmaden.navigationss.data.model.product.ProductDetails
 import com.yasinmaden.navigationss.data.model.product.ProductResponse
-import com.yasinmaden.navigationss.domain.repository.CategoryRepository
-import com.yasinmaden.navigationss.domain.repository.ProductRepository
+import com.yasinmaden.navigationss.repository.CategoryRepository
+import com.yasinmaden.navigationss.repository.ProductRepository
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -24,6 +25,7 @@ class HomeViewModel @Inject constructor(
     private val productRepository: ProductRepository,
     private val categoryRepository: CategoryRepository
 ) : ViewModel() {
+
     private val _uiState = MutableStateFlow(HomeContract.UiState())
     val uiState: StateFlow<HomeContract.UiState> = _uiState.asStateFlow()
 
@@ -33,6 +35,14 @@ class HomeViewModel @Inject constructor(
     fun onAction(uiAction: HomeContract.UiAction) {
         when (uiAction) {
             is HomeContract.UiAction.OnTabSelected -> updateSelectedTab(uiAction.screen)
+            is HomeContract.UiAction.OnCategorySelected -> viewModelScope.launch {
+                loadProductsByCategory(uiAction.category)
+            }
+
+            is HomeContract.UiAction.OnProductSelected -> viewModelScope.launch {
+                emitUiEffect(HomeContract.UiEffect.NavigateToProductDetails(uiAction.product))
+                loadProductDetails(uiAction.product.id)
+            }
         }
     }
 
@@ -47,26 +57,50 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private suspend fun loadProductsByCategory(categoryName: String): Resource<ProductResponse> {
+        _uiState.update { it.copy(isLoadingProducts = true) }
+        when (val request = productRepository.getProductsByCategory(categoryName)) {
+            is Resource.Success -> {
+                _uiState.update {
+                    it.copy(
+                        products = request.data.products,
+                        isLoadingProducts = false
+                    )
+                }
+                return Resource.Success(data = request.data)
+            }
+
+            is Resource.Error -> {
+                _uiState.update { it.copy(isLoadingProducts = false) }
+                return Resource.Error(exception = request.exception)
+            }
+        }
+    }
+
+    private suspend fun loadProductDetails(id: Int): Resource<ProductDetails> {
+        _uiState.update { it.copy(isLoading = true) }
+        when (val request = productRepository.getProductById(id)) {
+            is Resource.Success -> {
+                _uiState.update { it.copy(productDetail = request.data, isLoading = false) }
+                return Resource.Success(data = request.data)
+            }
+
+            is Resource.Error -> {
+                _uiState.update { it.copy(isLoading = false) }
+                return Resource.Error(exception = request.exception)
+            }
+        }
+    }
+
     private suspend fun loadProducts(): Resource<ProductResponse> {
-        Log.d("loadProducts", "Veri çekme işlemi başladı") // Başlangıç logu
         _uiState.update { it.copy(isLoading = true) }
         when (val request = productRepository.getProducts()) {
             is Resource.Success -> {
-                Log.d("loadProducts", "Veri başarıyla çekildi. Ürünler listeleniyor...")
-
-                // Her bir ürünü alt alta logluyoruz
-                request.data.products.forEach { product ->
-                    Log.d("loadProducts", "Ürün: $product")
-                }
                 _uiState.update { it.copy(products = request.data.products, isLoading = false) }
                 return Resource.Success(data = request.data)
             }
 
             is Resource.Error -> {
-                Log.e(
-                    "loadProducts",
-                    "Veri çekme hatası: ${request.exception.message}"
-                ) // Hata durumunda log
                 _uiState.update { it.copy(isLoading = false) }
                 return Resource.Error(exception = request.exception)
             }
@@ -74,22 +108,14 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun loadCategories(): Resource<List<String>> {
-        Log.d("loadCategories", "Veri çekme işlemi başladı")
         _uiState.update { it.copy(isLoading = true) }
         when (val request = categoryRepository.getCategories()) {
             is Resource.Success -> {
-                Log.d("loadCategories", "Veri başarıyla çekildi. Kategoriler listeleniyor...")
-
-                request.data.forEach{ category->
-                    Log.d("loadCategories", "Kategori: $category")
-                }
-
                 _uiState.update { it.copy(categories = request.data, isLoading = false) }
                 return Resource.Success(data = request.data)
             }
 
             is Resource.Error -> {
-                Log.e("loadCategories", "Veri çekme hatası: ${request.exception.message}")
                 _uiState.update { it.copy(isLoading = false) }
                 return Resource.Error(exception = request.exception)
             }

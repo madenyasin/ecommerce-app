@@ -1,4 +1,4 @@
-package com.yasinmaden.navigationss.ui.login
+package com.yasinmaden.navigationss.ui.auth.login
 
 object LoginContract {
     data class UiState(

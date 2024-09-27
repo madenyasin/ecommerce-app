@@ -7,12 +7,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.yasinmaden.navigationss.ui.forgot.ForgotScreen
-import com.yasinmaden.navigationss.ui.forgot.ForgotViewModel
-import com.yasinmaden.navigationss.ui.login.LoginScreen
-import com.yasinmaden.navigationss.ui.login.LoginViewModel
-import com.yasinmaden.navigationss.ui.signup.SignUpScreen
-import com.yasinmaden.navigationss.ui.signup.SignUpViewModel
+import com.yasinmaden.navigationss.ui.auth.forgot.ForgotScreen
+import com.yasinmaden.navigationss.ui.auth.forgot.ForgotViewModel
+import com.yasinmaden.navigationss.ui.auth.login.LoginScreen
+import com.yasinmaden.navigationss.ui.auth.login.LoginViewModel
+import com.yasinmaden.navigationss.ui.auth.signup.SignUpScreen
+import com.yasinmaden.navigationss.ui.auth.signup.SignUpViewModel
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     navigation(

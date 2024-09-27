@@ -1,7 +1,7 @@
-package com.yasinmaden.navigationss.domain.repository
+package com.yasinmaden.navigationss.repository
 
 import com.yasinmaden.navigationss.common.Resource
-import com.yasinmaden.navigationss.data.network.DummyAPIService
+import com.yasinmaden.navigationss.network.DummyAPIService
 import javax.inject.Inject
 
 

@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.yasinmaden.navigationss.R
 import com.yasinmaden.navigationss.data.model.product.ProductDetails
+import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
 import kotlinx.coroutines.flow.Flow
@@ -50,12 +51,17 @@ fun HomeScreen(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    val context = LocalContext.current
+
+
     LaunchedEffect(Unit) {
         uiEffect.collect { effect ->
             when (effect) {
                 is HomeContract.UiEffect.NavigateTo -> {
                     navController.navigate(effect.route)
+                }
+
+                is HomeContract.UiEffect.NavigateToProductDetails -> {
+                    navController.navigate(Graph.DETAILS)
                 }
             }
         }
@@ -65,7 +71,8 @@ fun HomeScreen(
         uiState.list.isNotEmpty() -> EmptyScreen()
         else -> HomeContent(
             navController = navController,
-            uiState = uiState
+            uiState = uiState,
+            onAction = onAction
         )
     }
 }
@@ -73,7 +80,8 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     navController: NavHostController,
-    uiState: HomeContract.UiState
+    uiState: HomeContract.UiState,
+    onAction: (HomeContract.UiAction) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -85,14 +93,24 @@ fun HomeContent(
         Column {
             WelcomeSection()
             SearchBar()
-            ChooseCategorySection(uiState.categories)
-            ProductSection(uiState.products)
+            ChooseCategorySection(
+                categories = uiState.categories,
+                onAction = onAction
+            )
+            ProductSection(
+                products = uiState.products,
+                isLoading = uiState.isLoadingProducts,
+                onAction = onAction
+            )
         }
     }
 }
 
 @Composable
-fun ChooseCategorySection(categories: List<String>) {
+fun ChooseCategorySection(
+    categories: List<String>,
+    onAction: (HomeContract.UiAction) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -108,7 +126,10 @@ fun ChooseCategorySection(categories: List<String>) {
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(categories) { brand ->
-                CategoryCard(categoryName = brand)
+                CategoryCard(
+                    categoryName = brand,
+                    onAction = onAction
+                )
             }
         }
     }
@@ -116,11 +137,14 @@ fun ChooseCategorySection(categories: List<String>) {
 
 
 @Composable
-fun CategoryCard(categoryName: String) {
+fun CategoryCard(
+    categoryName: String,
+    onAction: (HomeContract.UiAction) -> Unit
+) {
     Card(
         modifier = Modifier
             .height(50.dp)
-            .clickable {  },
+            .clickable { onAction(HomeContract.UiAction.OnCategorySelected(categoryName)) },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Box(
@@ -138,12 +162,15 @@ fun CategoryCard(categoryName: String) {
 }
 
 @Composable
-fun ProductCard(product: ProductDetails) {
+fun ProductCard(
+    product: ProductDetails,
+    onAction: (HomeContract.UiAction) -> Unit
+) {
     Box(
         modifier = Modifier
             .size(160.dp, 265.dp)
             .background(MaterialTheme.colorScheme.background)
-            .clickable {  }
+            .clickable { onAction(HomeContract.UiAction.OnProductSelected(product)) }
     ) {
         Column {
             Card(
@@ -174,8 +201,11 @@ fun ProductCard(product: ProductDetails) {
 
 
 @Composable
-fun ProductSection(products: List<ProductDetails>) {
-
+fun ProductSection(
+    products: List<ProductDetails>,
+    isLoading: Boolean,
+    onAction: (HomeContract.UiAction) -> Unit
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -186,19 +216,25 @@ fun ProductSection(products: List<ProductDetails>) {
             modifier = Modifier.padding(bottom = 8.dp, start = 16.dp)
         )
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(16.dp)
-        ) {
-            items(products) { product ->
-                ProductCard(product = product)
+        if (isLoading) {
+            LoadingBar()
+        } else {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(16.dp)
+            ) {
+                items(products) { product ->
+                    ProductCard(
+                        product = product,
+                        onAction = onAction
+                    )
+                }
             }
         }
+
     }
-
-
 }
 
 

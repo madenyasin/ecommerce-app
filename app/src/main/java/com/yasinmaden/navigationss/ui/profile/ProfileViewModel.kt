@@ -2,7 +2,7 @@ package com.yasinmaden.navigationss.ui.profile
 
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
+import com.yasinmaden.navigationss.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiAction
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiEffect
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiState

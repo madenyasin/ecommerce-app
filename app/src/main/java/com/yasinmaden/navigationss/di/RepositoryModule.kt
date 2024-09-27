@@ -3,11 +3,11 @@ package com.yasinmaden.navigationss.di
 import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
-import com.yasinmaden.navigationss.data.network.DummyAPIService
-import com.yasinmaden.navigationss.domain.repository.CategoryRepository
-import com.yasinmaden.navigationss.domain.repository.FirebaseAuthRepository
-import com.yasinmaden.navigationss.domain.repository.GoogleAuthRepository
-import com.yasinmaden.navigationss.domain.repository.ProductRepository
+import com.yasinmaden.navigationss.network.DummyAPIService
+import com.yasinmaden.navigationss.repository.CategoryRepository
+import com.yasinmaden.navigationss.repository.FirebaseAuthRepository
+import com.yasinmaden.navigationss.repository.GoogleAuthRepository
+import com.yasinmaden.navigationss.repository.ProductRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

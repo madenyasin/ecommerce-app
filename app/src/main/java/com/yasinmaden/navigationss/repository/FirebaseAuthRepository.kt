@@ -1,4 +1,4 @@
-package com.yasinmaden.navigationss.domain.repository
+package com.yasinmaden.navigationss.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
