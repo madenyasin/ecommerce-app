@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.yasinmaden.navigationss.R
 import com.yasinmaden.navigationss.data.model.product.ProductDetails
+import com.yasinmaden.navigationss.navigation.DetailsScreen
 import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
@@ -61,7 +62,8 @@ fun HomeScreen(
                 }
 
                 is HomeContract.UiEffect.NavigateToProductDetails -> {
-                    navController.navigate(Graph.DETAILS)
+                    val itemId = "123"  // Replace with actual item ID
+                    navController.navigate("${DetailsScreen.Information.route}/$itemId")
                 }
             }
         }

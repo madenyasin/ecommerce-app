@@ -16,7 +16,8 @@ fun DetailScreen(
     uiEffect: Flow<DetailContract.UiEffect>,
     onAction: (DetailContract.UiAction) -> Unit,
     navController: NavHostController,
-    modifier: Modifier
+    modifier: Modifier,
+    itemId: String
 ) {
     LaunchedEffect(Unit) {
         uiEffect.collect { effect ->
@@ -29,7 +30,8 @@ fun DetailScreen(
         else -> DetailContent(
             navController = navController,
             uiState = uiState,
-            onAction = onAction
+            onAction = onAction,
+            itemId = itemId
         )
     }
 }
@@ -38,7 +40,9 @@ fun DetailScreen(
 fun DetailContent(
     navController: NavHostController,
     uiState: DetailContract.UiState,
-    onAction: (DetailContract.UiAction) -> Unit
+    onAction: (DetailContract.UiAction) -> Unit,
+    itemId: String
 ) {
-    Text(text = "Detail Screen")
+    Text(text = "Detail Screen $itemId")
+
 }
