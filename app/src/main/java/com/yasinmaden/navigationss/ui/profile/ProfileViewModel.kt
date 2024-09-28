@@ -1,6 +1,7 @@
 package com.yasinmaden.navigationss.ui.profile
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.yasinmaden.navigationss.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.ui.profile.ProfileContract.UiAction
@@ -14,12 +15,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    val googleAuthRepository: GoogleAuthRepository,
-    val firebaseAuth: FirebaseAuth
+    private val googleAuthRepository: GoogleAuthRepository,
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -29,8 +31,27 @@ class ProfileViewModel @Inject constructor(
     val uiEffect: Flow<UiEffect> by lazy { _uiEffect.receiveAsFlow() }
 
 
-    fun onAction(uiAction: UiAction) {
+    init {
+        _uiState.update { it.copy(user = firebaseAuth.currentUser) }
     }
+
+    private fun signOut() = viewModelScope.launch {
+        try {
+            firebaseAuth.signOut()
+            googleAuthRepository.signOut()
+            emitUiEffect(UiEffect.NavigateToAuth)
+        } catch (e: Exception) {
+            emitUiEffect(UiEffect.ShowToast(e.message.toString()))
+        }
+    }
+
+    fun onAction(uiAction: UiAction) {
+        when (uiAction) {
+            is UiAction.OnSignOut -> signOut()
+        }
+    }
+
+
 
     private fun updateUiState(block: UiState.() -> UiState) {
         _uiState.update(block)

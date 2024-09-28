@@ -40,11 +40,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.yasinmaden.navigationss.R
 import com.yasinmaden.navigationss.navigation.AuthScreen
 import com.yasinmaden.navigationss.navigation.Graph
-import com.yasinmaden.navigationss.ui.components.EmptyScreen
-import com.yasinmaden.navigationss.ui.components.LoadingBar
 import com.yasinmaden.navigationss.ui.auth.login.LoginContract.UiAction
 import com.yasinmaden.navigationss.ui.auth.login.LoginContract.UiEffect
 import com.yasinmaden.navigationss.ui.auth.login.LoginContract.UiState
+import com.yasinmaden.navigationss.ui.components.EmptyScreen
+import com.yasinmaden.navigationss.ui.components.LoadingBar
 import com.yasinmaden.navigationss.ui.theme.DarkGray
 import com.yasinmaden.navigationss.ui.theme.GoogleButtonColor
 import com.yasinmaden.navigationss.ui.theme.Gray
@@ -88,14 +88,8 @@ fun LoginScreen(
         uiState.isLoading -> LoadingBar()
         uiState.list.isNotEmpty() -> EmptyScreen()
         else -> LoginContent(
-            email = uiState.email,
-            password = uiState.password,
-            onEmailChange = { onAction(UiAction.OnEmailChange(it)) },
-            onPasswordChange = { onAction(UiAction.OnPasswordChange(it)) },
-            onClick = { onAction(UiAction.OnLoginClick) },
-            onSignUpClick = { onAction(UiAction.OnSignUpClick) },
-            onForgotClick = { onAction(UiAction.OnForgotClick) },
-            onGoogleSignIn = { idToken -> onAction(UiAction.OnGoogleSignIn(idToken)) },
+            uiState = uiState,
+            onAction = onAction,
             viewModel = LoginViewModel(
                 firebaseAuthRepository = viewModel.firebaseAuthRepository,
                 googleAuthRepository = viewModel.googleAuthRepository
@@ -106,19 +100,10 @@ fun LoginScreen(
 
 @Composable
 fun LoginContent(
-    email: String,
-    password: String,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onClick: () -> Unit,
-    onSignUpClick: () -> Unit,
-    onForgotClick: () -> Unit,
-    onGoogleSignIn: (String) -> Unit,
+    uiState: UiState,
+    onAction: (UiAction) -> Unit,
     viewModel: LoginViewModel
 ) {
-    val context = LocalContext.current
-
-
     val googleSignInLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -126,7 +111,7 @@ fun LoginContent(
             val account: GoogleSignInAccount? =
                 GoogleSignIn.getSignedInAccountFromIntent(result.data).result
             account?.idToken?.let { idToken ->
-                onGoogleSignIn(idToken)
+                onAction(UiAction.OnGoogleSignIn(idToken))
             }
         } catch (e: Exception) {
             UiEffect.ShowToast(e.message.toString())
@@ -153,8 +138,8 @@ fun LoginContent(
                 color = Gray
             )
             OutlinedTextField(
-                value = email,
-                onValueChange = onEmailChange,
+                value = uiState.email,
+                onValueChange = { onAction(UiAction.OnEmailChange(it)) },
                 label = { Text(text = "Email", fontSize = 13.sp) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
@@ -166,8 +151,8 @@ fun LoginContent(
                     .fillMaxWidth(),
             )
             OutlinedTextField(
-                value = password,
-                onValueChange = onPasswordChange,
+                value = uiState.password,
+                onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
                 label = { Text(text = "Password", fontSize = 13.sp) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
@@ -187,7 +172,7 @@ fun LoginContent(
                     color = DarkGray,
                     modifier = Modifier
                         .padding(top = 8.dp)
-                        .clickable { onSignUpClick.invoke() }
+                        .clickable { onAction(UiAction.OnSignUpClick) }
                 )
                 Text(
                     text = "Forgot Password?",
@@ -195,7 +180,7 @@ fun LoginContent(
                     color = Red,
                     modifier = Modifier
                         .padding(top = 8.dp)
-                        .clickable { onForgotClick.invoke() }
+                        .clickable { onAction(UiAction.OnForgotClick) }
                 )
             }
             Text(
@@ -239,7 +224,7 @@ fun LoginContent(
 
         }
         Button(
-            onClick = onClick,
+            onClick = { onAction(UiAction.OnLoginClick) },
             shape = RoundedCornerShape(0.dp),
             modifier = Modifier
                 .align(Alignment.BottomCenter)

@@ -60,23 +60,16 @@ fun SignUpScreen(
         uiState.isLoading -> LoadingBar()
         uiState.list.isNotEmpty() -> EmptyScreen()
         else -> SignUpContent(
-            email = uiState.email,
-            password = uiState.password,
-            onEmailChange = { onAction(UiAction.OnEmailChange(it)) },
-            onPasswordChange = { onAction(UiAction.OnPasswordChange(it)) },
-            onClick = { onAction(UiAction.OnSignUpClick) },
-
+            uiState = uiState,
+            onAction = onAction,
         )
     }
 }
 
 @Composable
 fun SignUpContent(
-    email: String,
-    password: String,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onClick: () -> Unit,
+    uiState: UiState,
+    onAction: (UiAction) -> Unit,
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -94,8 +87,8 @@ fun SignUpContent(
             )
 
             OutlinedTextField(
-                value = email,
-                onValueChange = onEmailChange,
+                value = uiState.email,
+                onValueChange = { onAction(UiAction.OnEmailChange(it)) },
                 label = { Text(text = "Email", fontSize = 13.sp) },
                 singleLine = true,
                 modifier = Modifier
@@ -103,8 +96,8 @@ fun SignUpContent(
                     .fillMaxWidth(),
             )
             OutlinedTextField(
-                value = password,
-                onValueChange = onPasswordChange,
+                value = uiState.password,
+                onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
                 label = { Text(text = "Password", fontSize = 13.sp) },
                 singleLine = true,
                 modifier = Modifier
@@ -113,7 +106,7 @@ fun SignUpContent(
             )
         }
         Button(
-            onClick = onClick,
+            onClick = { onAction(UiAction.OnSignUpClick) },
             shape = RoundedCornerShape(0.dp),
             modifier = Modifier
                 .align(Alignment.BottomCenter) // Align the button to the bottom center

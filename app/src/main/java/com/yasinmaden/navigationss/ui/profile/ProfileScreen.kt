@@ -21,11 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.google.firebase.auth.FirebaseAuth
-import com.yasinmaden.navigationss.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
@@ -43,13 +40,20 @@ fun ProfileScreen(
     onAction: (UiAction) -> Unit,
     navController: NavHostController,
 ) {
-    val viewModel: ProfileViewModel = hiltViewModel()
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         uiEffect.collect { effect ->
             when (effect) {
                 is UiEffect.ShowToast -> {
-                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                }
+
+                is UiEffect.NavigateToAuth -> {
+                    navController.navigate(Graph.AUTHENTICATION) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                    }
                 }
             }
         }
@@ -58,20 +62,17 @@ fun ProfileScreen(
         uiState.isLoading -> LoadingBar()
         uiState.list.isNotEmpty() -> EmptyScreen()
         else -> ProfileContent(
-            navController = navController,
-            firebaseAuth = viewModel.firebaseAuth,
-            googleAuthRepository = viewModel.googleAuthRepository
+            uiState = uiState,
+            onAction = onAction
         )
     }
 }
 
 @Composable
 fun ProfileContent(
-    navController: NavHostController,
-    firebaseAuth: FirebaseAuth,
-    googleAuthRepository: GoogleAuthRepository
+    uiState: UiState,
+    onAction: (UiAction) -> Unit
 ) {
-    val user = firebaseAuth.currentUser
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -81,8 +82,7 @@ fun ProfileContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            user?.let {
-                // Display profile picture if available
+            uiState.user?.let {
                 it.photoUrl?.let { photoUri ->
                     AsyncImage(
                         model = photoUri,
@@ -91,39 +91,19 @@ fun ProfileContent(
                         contentScale = ContentScale.Crop
                     )
                 }
-
-                // Display user name
                 Text(
                     text = it.displayName ?: "No Name",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
-
-                // Display email
                 Text(
                     text = "Email: ${it.email ?: "No Email"}",
                     fontSize = 16.sp,
                     color = Gray
                 )
-
                 Spacer(modifier = Modifier.height(16.dp))
-
-                // Sign-out button
                 Button(
-                    onClick = {
-                        try {
-                            firebaseAuth.signOut()
-                            googleAuthRepository.signOut()
-                            navController.navigate(Graph.AUTHENTICATION) {
-                                popUpTo(navController.graph.startDestinationId) {
-                                    inclusive = true // Clear back stack
-                                }
-                            }
-                        } catch (e: Exception) {
-                            UiEffect.ShowToast(e.message.toString())
-                        }
-
-                    }
+                    onClick = { onAction(UiAction.OnSignOut) }
                 ) {
                     Text(text = "Sign Out", fontSize = 20.sp)
                 }

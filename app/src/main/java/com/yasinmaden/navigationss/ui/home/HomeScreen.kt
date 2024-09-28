@@ -38,7 +38,6 @@ import coil.compose.AsyncImage
 import com.yasinmaden.navigationss.R
 import com.yasinmaden.navigationss.data.model.product.ProductDetails
 import com.yasinmaden.navigationss.navigation.DetailsScreen
-import com.yasinmaden.navigationss.navigation.Graph
 import com.yasinmaden.navigationss.ui.components.EmptyScreen
 import com.yasinmaden.navigationss.ui.components.LoadingBar
 import kotlinx.coroutines.flow.Flow
@@ -96,12 +95,11 @@ fun HomeContent(
             WelcomeSection()
             SearchBar()
             ChooseCategorySection(
-                categories = uiState.categories,
+                uiState = uiState,
                 onAction = onAction
             )
             ProductSection(
-                products = uiState.products,
-                isLoading = uiState.isLoadingProducts,
+                uiState = uiState,
                 onAction = onAction
             )
         }
@@ -110,7 +108,7 @@ fun HomeContent(
 
 @Composable
 fun ChooseCategorySection(
-    categories: List<String>,
+    uiState: HomeContract.UiState,
     onAction: (HomeContract.UiAction) -> Unit
 ) {
     Column(
@@ -127,7 +125,7 @@ fun ChooseCategorySection(
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(categories) { brand ->
+            items(uiState.categories) { brand ->
                 CategoryCard(
                     categoryName = brand,
                     onAction = onAction
@@ -204,8 +202,7 @@ fun ProductCard(
 
 @Composable
 fun ProductSection(
-    products: List<ProductDetails>,
-    isLoading: Boolean,
+    uiState: HomeContract.UiState,
     onAction: (HomeContract.UiAction) -> Unit
 ) {
     Column(
@@ -218,7 +215,7 @@ fun ProductSection(
             modifier = Modifier.padding(bottom = 8.dp, start = 16.dp)
         )
 
-        if (isLoading) {
+        if (uiState.isLoadingProducts) {
             LoadingBar()
         } else {
             LazyVerticalGrid(
@@ -227,7 +224,7 @@ fun ProductSection(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.padding(16.dp)
             ) {
-                items(products) { product ->
+                items(uiState.products) { product ->
                     ProductCard(
                         product = product,
                         onAction = onAction

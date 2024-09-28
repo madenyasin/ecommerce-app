@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -33,12 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.yasinmaden.navigationss.R
-import com.yasinmaden.navigationss.ui.components.EmptyScreen
-import com.yasinmaden.navigationss.ui.components.LoadingBar
+import com.yasinmaden.navigationss.navigation.AuthScreen
 import com.yasinmaden.navigationss.ui.auth.forgot.ForgotContract.UiAction
 import com.yasinmaden.navigationss.ui.auth.forgot.ForgotContract.UiEffect
 import com.yasinmaden.navigationss.ui.auth.forgot.ForgotContract.UiState
-import com.yasinmaden.navigationss.navigation.AuthScreen
+import com.yasinmaden.navigationss.ui.components.EmptyScreen
+import com.yasinmaden.navigationss.ui.components.LoadingBar
 import com.yasinmaden.navigationss.ui.theme.Gray
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -57,12 +56,10 @@ fun ForgotScreen(
         uiEffect.collect { effect ->
             when (effect) {
                 is UiEffect.NavigateBack -> {
-                    // Handle back navigation
                     navController.popBackStack()
                 }
 
                 is UiEffect.NavigateToLogin -> {
-                    // Handle navigation to login screen
                     navController.navigate(AuthScreen.Login.route) {
                         popUpTo(navController.graph.startDestinationId) { inclusive = true }
                         launchSingleTop = true
@@ -70,7 +67,6 @@ fun ForgotScreen(
                 }
 
                 is UiEffect.ShowToast -> {
-                    // Handle showing a toast message
                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -82,27 +78,23 @@ fun ForgotScreen(
         uiState.isLoading -> LoadingBar()
         uiState.list.isNotEmpty() -> EmptyScreen()
         else -> ForgotContent(
-            email = uiState.email,
-            onEmailChange = { onAction(UiAction.OnEmailChange(it)) },
-            onConfirmClick = { onAction(UiAction.OnConfirmClick) },
-            onBackClick = { onAction(UiAction.OnBackClick) }
+            uiState = uiState,
+            onAction = onAction,
         )
     }
 }
 
 @Composable
 fun ForgotContent(
-    email: String,
-    onEmailChange: (String) -> Unit,
-    onConfirmClick: () -> Unit,
-    onBackClick: () -> Unit
+    uiState: UiState,
+    onAction: (UiAction) -> Unit,
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
         IconButton(
-            onClick = onBackClick,
+            onClick = { onAction(UiAction.OnBackClick) },
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(32.dp, 48.dp)
@@ -125,8 +117,8 @@ fun ForgotContent(
                 Modifier.size(225.dp, 166.dp)
             )
             OutlinedTextField(
-                value = email,
-                onValueChange = onEmailChange,
+                value = uiState.email,
+                onValueChange = { onAction(UiAction.OnEmailChange(it)) },
                 label = { Text(text = "Email Address", fontSize = 13.sp) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
@@ -144,7 +136,7 @@ fun ForgotContent(
             )
         }
         Button(
-            onClick = onConfirmClick,
+            onClick = { onAction(UiAction.OnConfirmClick) },
             shape = RoundedCornerShape(0.dp),
             modifier = Modifier
                 .align(Alignment.BottomCenter) // Align the button to the bottom center

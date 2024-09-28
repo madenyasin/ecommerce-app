@@ -92,14 +92,12 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun handleSignUpClick() {
-        // Handle sign-up logic here, e.g., navigate to sign-up screen
         viewModelScope.launch {
             emitUiEffect(UiEffect.NavigateToSignUp)
         }
     }
 
     private fun handleForgotClick() {
-        // Handle forgot password logic here, e.g., navigate to reset password screen
         viewModelScope.launch {
             emitUiEffect(UiEffect.NavigateToForgotPassword)
         }
