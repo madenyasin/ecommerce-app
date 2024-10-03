@@ -44,9 +44,10 @@ class HomeViewModel @Inject constructor(
                 loadProductDetails(uiAction.product.id)
             }
 
-            is HomeContract.UiAction.OnFavoriteClicked -> TODO()
+            is HomeContract.UiAction.OnFavoriteClicked -> onFavoriteClicked(uiAction.product)
         }
     }
+
 
     init {
         viewModelScope.launch {
@@ -58,6 +59,23 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+
+    private fun onFavoriteClicked(product: ProductDetails) {
+        val updatedProduct = product.copy(isFavorite = !product.isFavorite)
+        _uiState.update { currentState ->
+            currentState.copy(
+                products = currentState.products.map { productItem ->
+                    if (productItem.id == updatedProduct.id) {
+                        updatedProduct
+                    } else {
+                        productItem
+                    }
+                }
+            )
+        }
+    }
+
 
     private suspend fun loadProductsByCategory(categoryName: String): Resource<ProductResponse> {
         _uiState.update { it.copy(isLoadingProducts = true) }

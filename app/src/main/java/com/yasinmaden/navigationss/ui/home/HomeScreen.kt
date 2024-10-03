@@ -219,13 +219,16 @@ fun ProductCard(
                 .padding(8.dp)
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.favorites),
+                if (product.isFavorite) {
+                    ImageVector.vectorResource(R.drawable.favorites_filled)
+                } else {
+                    ImageVector.vectorResource(R.drawable.favorites)
+                },
                 contentDescription = "Favorite"
             )
         }
     }
 }
-
 
 
 @Composable
