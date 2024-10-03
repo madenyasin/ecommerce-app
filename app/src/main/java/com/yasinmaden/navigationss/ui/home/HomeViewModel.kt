@@ -3,10 +3,12 @@ package com.yasinmaden.navigationss.ui.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.yasinmaden.navigationss.common.Resource
 import com.yasinmaden.navigationss.data.model.product.ProductDetails
 import com.yasinmaden.navigationss.data.model.product.ProductResponse
 import com.yasinmaden.navigationss.repository.CategoryRepository
+import com.yasinmaden.navigationss.repository.FirebaseDatabaseRepository
 import com.yasinmaden.navigationss.repository.ProductRepository
 import com.yasinmaden.navigationss.ui.components.BottomBarScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +25,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val productRepository: ProductRepository,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    private val firebaseDatabaseRepository: FirebaseDatabaseRepository,
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeContract.UiState())
@@ -72,6 +76,12 @@ class HomeViewModel @Inject constructor(
                         productItem
                     }
                 }
+            )
+        }
+        firebaseAuth.currentUser?.let {
+            firebaseDatabaseRepository.setFavoriteItem(
+                user = it,
+                product = updatedProduct
             )
         }
     }
