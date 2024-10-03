@@ -51,7 +51,6 @@ fun HomeScreen(
     uiEffect: Flow<HomeContract.UiEffect>,
     onAction: (HomeContract.UiAction) -> Unit,
     navController: NavHostController,
-    modifier: Modifier
 ) {
 
 
@@ -73,7 +72,6 @@ fun HomeScreen(
         uiState.isLoading -> LoadingBar()
         uiState.list.isNotEmpty() -> EmptyScreen()
         else -> HomeContent(
-            navController = navController,
             uiState = uiState,
             onAction = onAction
         )
@@ -82,7 +80,6 @@ fun HomeScreen(
 
 @Composable
 fun HomeContent(
-    navController: NavHostController,
     uiState: HomeContract.UiState,
     onAction: (HomeContract.UiAction) -> Unit
 ) {
@@ -243,7 +240,7 @@ fun ProductSection(
         Text(
             text = "New Arrival",
             style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(bottom = 8.dp, start = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
         )
 
         if (uiState.isLoadingProducts) {
@@ -253,8 +250,9 @@ fun ProductSection(
                 columns = GridCells.Fixed(2),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(horizontal = 8.dp)
             ) {
+
                 items(uiState.products) { product ->
                     ProductCard(
                         product = product,
@@ -315,6 +313,5 @@ fun PreviewApp() {
         uiEffect = flowOf(),
         onAction = {},
         navController = NavHostController(LocalContext.current),
-        modifier = Modifier
     )
 }
