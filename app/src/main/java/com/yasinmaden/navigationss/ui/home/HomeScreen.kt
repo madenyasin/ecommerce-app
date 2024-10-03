@@ -51,7 +51,6 @@ fun HomeScreen(
     uiEffect: Flow<HomeContract.UiEffect>,
     onAction: (HomeContract.UiAction) -> Unit,
     navController: NavHostController,
-    modifier: Modifier
 ) {
 
 
@@ -73,7 +72,6 @@ fun HomeScreen(
         uiState.isLoading -> LoadingBar()
         uiState.list.isNotEmpty() -> EmptyScreen()
         else -> HomeContent(
-            navController = navController,
             uiState = uiState,
             onAction = onAction
         )
@@ -82,7 +80,6 @@ fun HomeScreen(
 
 @Composable
 fun HomeContent(
-    navController: NavHostController,
     uiState: HomeContract.UiState,
     onAction: (HomeContract.UiAction) -> Unit
 ) {
@@ -316,6 +313,5 @@ fun PreviewApp() {
         uiEffect = flowOf(),
         onAction = {},
         navController = NavHostController(LocalContext.current),
-        modifier = Modifier
     )
 }
