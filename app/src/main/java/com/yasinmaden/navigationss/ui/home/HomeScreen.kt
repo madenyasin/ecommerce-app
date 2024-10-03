@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -209,6 +210,17 @@ fun ProductCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
+            )
+        }
+        IconButton(
+            onClick = { onAction(HomeContract.UiAction.OnFavoriteClicked(product)) },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp)
+        ) {
+            Icon(
+                imageVector = ImageVector.vectorResource(R.drawable.favorites),
+                contentDescription = "Favorite"
             )
         }
     }

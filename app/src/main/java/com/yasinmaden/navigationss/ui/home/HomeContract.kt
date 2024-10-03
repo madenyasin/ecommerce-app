@@ -18,6 +18,8 @@ object HomeContract {
         data class OnTabSelected(val screen: BottomBarScreen) : UiAction()
         data class OnCategorySelected(val category: String) : UiAction()
         data class OnProductSelected(val product: ProductDetails) : UiAction()
+        data class OnFavoriteClicked(val product: ProductDetails) : UiAction()
+
     }
 
     sealed class UiEffect {

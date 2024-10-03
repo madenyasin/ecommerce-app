@@ -43,6 +43,8 @@ class HomeViewModel @Inject constructor(
                 emitUiEffect(HomeContract.UiEffect.NavigateToProductDetails(uiAction.product))
                 loadProductDetails(uiAction.product.id)
             }
+
+            is HomeContract.UiAction.OnFavoriteClicked -> TODO()
         }
     }
 
