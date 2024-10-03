@@ -41,6 +41,7 @@ class HomeViewModel @Inject constructor(
             is HomeContract.UiAction.OnTabSelected -> updateSelectedTab(uiAction.screen)
             is HomeContract.UiAction.OnCategorySelected -> viewModelScope.launch {
                 loadProductsByCategory(uiAction.category)
+                loadFavoriteStates()
             }
 
             is HomeContract.UiAction.OnProductSelected -> viewModelScope.launch {
@@ -58,6 +59,7 @@ class HomeViewModel @Inject constructor(
             try {
                 loadProducts()
                 loadCategories()
+                loadFavoriteStates()
             } catch (e: Exception) {
                 Log.e("DataLoad", "Veriler yüklenirken hata oluştu: ${e.message}")
             }
@@ -146,6 +148,26 @@ class HomeViewModel @Inject constructor(
                 return Resource.Error(exception = request.exception)
             }
         }
+    }
+
+    private fun loadFavoriteStates() {
+        firebaseDatabaseRepository.getAllWishlist(
+            user = firebaseAuth.currentUser!!,
+            callback = { wishlist ->
+                updateUiState { // uiState güncelleme işlemi
+                    val updatedProducts = products.map { product ->
+                        val isFavoriteInWishlist = wishlist.any { item -> item.id == product.id && item.isFavorite }
+                        if (isFavoriteInWishlist) {
+                            product.copy(isFavorite = true) // isFavorite'i true yap
+                        } else {
+                            product // Eğer değilse olduğu gibi bırak
+                        }
+                    }
+                    copy(products = updatedProducts) // Tüm product listesi yeni güncellemelerle birlikte geri döner
+                }
+            },
+            onError = {}
+        )
     }
 
     private suspend fun loadCategories(): Resource<List<String>> {

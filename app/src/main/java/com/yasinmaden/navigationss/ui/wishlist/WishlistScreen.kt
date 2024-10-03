@@ -23,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
@@ -91,9 +92,14 @@ fun WishlistItem(product: ProductDetails) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(text = product.title, style = MaterialTheme.typography.titleMedium)
-                Text(text = product.description, style = MaterialTheme.typography.bodyMedium)
-                Text(text = "Price: ${product.price}", style = MaterialTheme.typography.bodyMedium)
-                Text(text = "Stock: ${product.stock}", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = product.description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(text = "Price: $${product.price}", style = MaterialTheme.typography.titleSmall)
+                Text(text = "Stock: ${product.stock}", style = MaterialTheme.typography.bodySmall)
             }
             Spacer(modifier = Modifier.width(8.dp))
             AsyncImage(
