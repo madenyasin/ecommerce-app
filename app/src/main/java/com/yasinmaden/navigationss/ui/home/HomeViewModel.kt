@@ -67,25 +67,26 @@ class HomeViewModel @Inject constructor(
 
     private fun onFavoriteClicked(product: ProductDetails) {
         val updatedProduct = product.copy(isFavorite = !product.isFavorite)
-        _uiState.update { currentState ->
-            currentState.copy(
-                products = currentState.products.map { productItem ->
-                    if (productItem.id == updatedProduct.id) {
+        updateUiState {
+            copy(
+                products = products.map { product ->
+                    if (product.id == updatedProduct.id) {
                         updatedProduct
                     } else {
-                        productItem
+                        product
                     }
                 }
             )
         }
-        if (updatedProduct.isFavorite){
+
+        if (updatedProduct.isFavorite) {
             firebaseAuth.currentUser?.let {
                 firebaseDatabaseRepository.addFavoriteItem(
                     user = it,
                     product = updatedProduct
                 )
             }
-        } else{
+        } else {
             firebaseAuth.currentUser?.let {
                 firebaseDatabaseRepository.removeFavoriteItem(
                     user = it,
@@ -98,11 +99,11 @@ class HomeViewModel @Inject constructor(
 
 
     private suspend fun loadProductsByCategory(categoryName: String): Resource<ProductResponse> {
-        _uiState.update { it.copy(isLoadingProducts = true) }
+        updateUiState { copy(isLoadingProducts = true) }
         when (val request = productRepository.getProductsByCategory(categoryName)) {
             is Resource.Success -> {
-                _uiState.update {
-                    it.copy(
+                updateUiState {
+                    copy(
                         products = request.data.products,
                         isLoadingProducts = false
                     )
@@ -111,59 +112,59 @@ class HomeViewModel @Inject constructor(
             }
 
             is Resource.Error -> {
-                _uiState.update { it.copy(isLoadingProducts = false) }
+                updateUiState { copy(isLoading = false) }
                 return Resource.Error(exception = request.exception)
             }
         }
     }
 
     private suspend fun loadProductDetails(id: Int): Resource<ProductDetails> {
-        _uiState.update { it.copy(isLoading = true) }
+        updateUiState { copy(isLoading = true) }
         when (val request = productRepository.getProductById(id)) {
             is Resource.Success -> {
-                _uiState.update { it.copy(product = request.data, isLoading = false) }
+                updateUiState { copy(product = request.data, isLoading = false) }
                 return Resource.Success(data = request.data)
             }
 
             is Resource.Error -> {
-                _uiState.update { it.copy(isLoading = false) }
+                updateUiState { copy(isLoading = false) }
                 return Resource.Error(exception = request.exception)
             }
         }
     }
 
     private suspend fun loadProducts(): Resource<ProductResponse> {
-        _uiState.update { it.copy(isLoading = true) }
+        updateUiState { copy(isLoading = true) }
         when (val request = productRepository.getProducts()) {
             is Resource.Success -> {
-                _uiState.update { it.copy(products = request.data.products, isLoading = false) }
+                updateUiState { copy(products = request.data.products, isLoading = false) }
                 return Resource.Success(data = request.data)
             }
 
             is Resource.Error -> {
-                _uiState.update { it.copy(isLoading = false) }
+                updateUiState { copy(isLoading = false) }
                 return Resource.Error(exception = request.exception)
             }
         }
     }
 
     private suspend fun loadCategories(): Resource<List<String>> {
-        _uiState.update { it.copy(isLoading = true) }
+        updateUiState { copy(isLoading = true) }
         when (val request = categoryRepository.getCategories()) {
             is Resource.Success -> {
-                _uiState.update { it.copy(categories = request.data, isLoading = false) }
+                updateUiState { copy(categories = request.data, isLoading = false) }
                 return Resource.Success(data = request.data)
             }
 
             is Resource.Error -> {
-                _uiState.update { it.copy(isLoading = false) }
+                updateUiState { copy(isLoading = false) }
                 return Resource.Error(exception = request.exception)
             }
         }
     }
 
     private fun updateSelectedTab(screen: BottomBarScreen) = viewModelScope.launch {
-        _uiState.update { it.copy(currentTab = screen) }
+        updateUiState { copy(currentTab = screen) }
         emitUiEffect(HomeContract.UiEffect.NavigateTo(screen.route))
     }
 
