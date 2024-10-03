@@ -18,6 +18,8 @@ import com.yasinmaden.navigationss.ui.home.HomeScreen
 import com.yasinmaden.navigationss.ui.home.HomeViewModel
 import com.yasinmaden.navigationss.ui.profile.ProfileScreen
 import com.yasinmaden.navigationss.ui.profile.ProfileViewModel
+import com.yasinmaden.navigationss.ui.wishlist.WishlistScreen
+import com.yasinmaden.navigationss.ui.wishlist.WishlistViewModel
 
 @Composable
 fun HomeNavGraph(
@@ -40,13 +42,17 @@ fun HomeNavGraph(
                 uiEffect = uiEffect,
                 onAction = viewModel::onAction,
                 navController = navController,
-                modifier = modifier
             )
         }
         composable(route = BottomBarScreen.Wishlist.route) {
-            ScreenContent(
-                name = BottomBarScreen.Wishlist.route,
-                onClick = { }
+            val viewModel: WishlistViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val uiEffect = viewModel.uiEffect
+            WishlistScreen(
+                uiState = uiState,
+                uiEffect = uiEffect,
+                onAction = viewModel::onAction,
+                navController = navController
             )
         }
         composable(route = BottomBarScreen.Cart.route) {

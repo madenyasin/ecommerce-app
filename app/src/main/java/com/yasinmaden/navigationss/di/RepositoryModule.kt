@@ -3,9 +3,11 @@ package com.yasinmaden.navigationss.di
 import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
 import com.yasinmaden.navigationss.network.DummyAPIService
 import com.yasinmaden.navigationss.repository.CategoryRepository
 import com.yasinmaden.navigationss.repository.FirebaseAuthRepository
+import com.yasinmaden.navigationss.repository.FirebaseDatabaseRepository
 import com.yasinmaden.navigationss.repository.GoogleAuthRepository
 import com.yasinmaden.navigationss.repository.ProductRepository
 import dagger.Module
@@ -58,5 +60,13 @@ object RepositoryModule {
         dummyAPIService: DummyAPIService
     ): CategoryRepository {
         return CategoryRepository(dummyAPIService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseDatabaseRepository(
+        databaseReference: DatabaseReference
+    ): FirebaseDatabaseRepository {
+        return FirebaseDatabaseRepository(databaseReference)
     }
 }
