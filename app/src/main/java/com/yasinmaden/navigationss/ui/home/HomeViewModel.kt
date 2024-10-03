@@ -78,12 +78,22 @@ class HomeViewModel @Inject constructor(
                 }
             )
         }
-        firebaseAuth.currentUser?.let {
-            firebaseDatabaseRepository.setFavoriteItem(
-                user = it,
-                product = updatedProduct
-            )
+        if (updatedProduct.isFavorite){
+            firebaseAuth.currentUser?.let {
+                firebaseDatabaseRepository.addFavoriteItem(
+                    user = it,
+                    product = updatedProduct
+                )
+            }
+        } else{
+            firebaseAuth.currentUser?.let {
+                firebaseDatabaseRepository.removeFavoriteItem(
+                    user = it,
+                    product = updatedProduct
+                )
+            }
         }
+
     }
 
 
