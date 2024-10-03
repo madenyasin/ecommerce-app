@@ -3,8 +3,10 @@ package com.yasinmaden.navigationss.ui.detail
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.yasinmaden.navigationss.common.Resource
 import com.yasinmaden.navigationss.data.model.product.ProductDetails
+import com.yasinmaden.navigationss.repository.FirebaseDatabaseRepository
 import com.yasinmaden.navigationss.repository.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -19,7 +21,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    private val firebaseDatabaseRepository: FirebaseDatabaseRepository,
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(DetailContract.UiState())
     val uiState: StateFlow<DetailContract.UiState> = _uiState.asStateFlow()
@@ -52,6 +56,43 @@ class DetailViewModel @Inject constructor(
 
 
     fun onAction(uiAction: DetailContract.UiAction) {
+        when (uiAction) {
+            is DetailContract.UiAction.OnFavoriteClicked -> onFavoriteClicked(uiAction.product)
+
+        }
+
+    }
+
+
+    private fun onFavoriteClicked(product: ProductDetails) {
+        val updatedProduct = product.copy(isFavorite = !product.isFavorite)
+        updateUiState {
+            copy(
+                products = products.map { product ->
+                    if (product.id == updatedProduct.id) {
+                        updatedProduct
+                    } else {
+                        product
+                    }
+                }
+            )
+        }
+
+        if (updatedProduct.isFavorite) {
+            firebaseAuth.currentUser?.let {
+                firebaseDatabaseRepository.addFavoriteItem(
+                    user = it,
+                    product = updatedProduct
+                )
+            }
+        } else {
+            firebaseAuth.currentUser?.let {
+                firebaseDatabaseRepository.removeFavoriteItem(
+                    user = it,
+                    product = updatedProduct
+                )
+            }
+        }
 
     }
 

@@ -6,9 +6,11 @@ object DetailContract {
     data class UiState(
         val isLoading: Boolean = false,
         val list: List<String> = emptyList(),
-        val product: ProductDetails = ProductDetails()
+        val product: ProductDetails = ProductDetails(),
+        val products: List<ProductDetails> = emptyList()
     )
     sealed class UiAction {
+        data class OnFavoriteClicked(val product: ProductDetails) : UiAction()
     }
     sealed class UiEffect {
     }
