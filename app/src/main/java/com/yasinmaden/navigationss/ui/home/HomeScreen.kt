@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -172,10 +173,15 @@ fun ProductCard(
             .background(MaterialTheme.colorScheme.background)
             .clickable { onAction(HomeContract.UiAction.OnProductSelected(product)) }
     ) {
-        Column {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.Start
+        ) {
             Card(
                 modifier = Modifier
-                    .size(160.dp, 203.dp),
+                    .fillMaxWidth()
+                    .weight(1f),
                 elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
             ) {
                 AsyncImage(
@@ -189,15 +195,25 @@ fun ProductCard(
             Text(
                 text = product.title,
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(bottom = 8.dp, top = 8.dp)
+                maxLines = 1, // Limit to 1 line if necessary
+                overflow = TextOverflow.Ellipsis, // Ellipsis if text is too long
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
             )
+
+            // Price text below the title
             Text(
                 text = product.price.toString(),
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
             )
         }
     }
 }
+
 
 
 @Composable
