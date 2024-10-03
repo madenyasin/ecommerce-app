@@ -20,5 +20,6 @@ data class ProductDetails(
     val thumbnail: String = "",
     val title: String = "",
     val warrantyInformation: String = "",
-    val weight: Int = 0
+    val weight: Int = 0,
+    var isFavorite: Boolean = false
 )
