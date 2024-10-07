@@ -13,12 +13,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Navigationss"
+        android:theme="@style/Theme.Ecommerceapp"
         tools:targetApi="31">
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Navigationss">
+            android:theme="@style/Theme.Ecommerceapp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -11,11 +11,11 @@ plugins {
 }
 
 android {
-    namespace = "com.yasinmaden.navigationss"
+    namespace = "com.yasinmaden.ecommerceapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.yasinmaden.navigationss"
+        applicationId = "com.yasinmaden.ecommerceapp"
         minSdk = 25
         //noinspection OldTargetApi
         targetSdk = 34
