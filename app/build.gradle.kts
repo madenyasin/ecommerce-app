@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -22,6 +24,16 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+
+        val keystoreFile = project.rootProject.file("keys.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+        val webClientId = properties.getProperty("WEB_CLIENT_ID") ?: ""
+        buildConfigField(
+            type = "String",
+            name = "WEB_CLIENT_ID",
+            value = webClientId
+        )
     }
 
     buildTypes {
@@ -42,6 +54,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     packaging {
         resources {
