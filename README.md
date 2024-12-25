@@ -58,3 +58,10 @@ The UI components for this project were inspired by the following Figma design:
 
 3. Build the project and run it on an emulator or a physical device.
 
+## Screenshots
+
+<img src="./ss/1.jpg" alt="Screenshot" width="200"/> <img src="./ss/2.jpg" alt="Screenshot" width="200"/>
+<img src="./ss/3.jpg" alt="Screenshot" width="200"/>
+<img src="./ss/4.jpg" alt="Screenshot" width="200"/>
+<img src="./ss/5.jpg" alt="Screenshot" width="200"/>
+<img src="./ss/6.jpg" alt="Screenshot" width="200"/>
